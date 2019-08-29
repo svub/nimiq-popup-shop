@@ -14,9 +14,7 @@ export default class Shop {
 
         // Data access
         this.storage = config.production ? new IpfsStorage() : new DummyStorage();
-        this.data = new Data(config, this.storage); // new Ipfs(this.storage);
-
-        this._initialized = true;
+        this.data = new Data(config, this.storage);
     }
 
     async checkout(products, meta) {
@@ -27,7 +25,7 @@ export default class Shop {
             value: price * 1e5,
             fee: config.fee,
             shopLogoUrl: config.shopLogoUrl,
-        }
+        };
         const signedTx = await this.hubApi.checkout(options);
         console.log(signedTx);
 
@@ -39,5 +37,4 @@ export default class Shop {
         const id = await this.data.store(order);
         console.log(id);
     }
-
 }
