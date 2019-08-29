@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,600,700" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@nimiq/style@v0/nimiq-style.min.css" rel="stylesheet">
+    <style>
+        textarea {
+            width: 30em;
+            height: 15em;
+        }
+    </style>
+
+    <title>Pop-Up Shop Setup</title>
+</head>
+
+<body class="nq-style">
+    <h2>Your private key</h2>
+    <p>
+        <strong>Don't share, store safely.</strong>
+    </p>
+    <textarea id="private"></textarea>
+
+    <h2>Your configuration</h2>
+    <p>
+        Add this to your shop config <code>config.js</code>
+    </p>
+    <p>
+        Where it says <code>key: null</code>, replace <code>null</code> with:
+    </p>
+    <textarea id="public"></textarea>
+    <p>
+        and put this as <code>repo</code>
+    </p>
+    <input type="text" id="repo">
+
+    <script type="module">
+        import config from '../config.js';
+        import Data from '../js/data.js';
+        import Crypto from '../js/crypto.js';
+
+        async function initialize() {
+            const keys = await Crypto.generateKey();
+
+            localStorage.publicKey = await Crypto.exportKey(keys.publicKey);
+            localStorage.privateKey = await Crypto.exportKey(keys.privateKey);
+            localStorage.repo = await Crypto.hash(localStore.publicKey.n);
+
+            show();
+        }
+
+        function show() {
+            const $ = document.getElementById.bind(document);
+
+            console.log(`Private Key\n${localStorage.privateKey}`);
+            console.log(`Public Key\n- add this to your shop config! -\n${localStorage.publicKey}`);
+
+            $('private').value = localStorage.privateKey;
+            $('public').value = localStorage.publicKey;
+            $('repo').value = localStorage.repo;
+        }
+
+        if (!localStorage.privateKey || confirm('Seems already setup. Overwrite? Make sure to not lose your private key!'))
+            initialize();
+        else show();
+
+
+
+    </script>
+</body>
+
+</html>
