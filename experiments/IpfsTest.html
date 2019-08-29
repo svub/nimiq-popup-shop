@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>IPFS Tester</title>
+    <script src="https://unpkg.com/ipfs/dist/index.js"></script>
+    <style>
+        body {
+            max-width: 30em;
+            margin: auto;
+        }
+        p {
+            display: flex;
+            flex-direction: column;
+        }
+
+    </style>
+</head>
+
+<body>
+    <p>
+        <input type="text" id="directory" value="test-1">
+    </p>
+        <h2>Write</h2>
+    <p>
+        <textarea name="textin" id="textin" cols="30" rows="10"></textarea>
+        <input type="text" id="filename" value="text.txt">
+        <button id="write">Store in IPFS</button>
+        <input type="text" id="hash" value="">
+    </p>
+        <h2>Read</h2>
+    <p>
+        <button id="read">Read from IPFS</button>
+        <textarea name="textout" id="textout" cols="30" rows="10"></textarea>
+    </p>
+    <p>
+        <pre id="output"></pre>
+    </p>
+    <script>
+        const repoPath = 'nimiq-popup-shop-ipfs-test',
+            // ipfs = new Ipfs({ repo: repoPath })
+            ipfs = new Ipfs(),
+            { Buffer } = Ipfs
+
+        document.getElementById('hash').value = localStorage.hash;
+
+        ipfs.on('ready', () => {
+
+            document.getElementById('write').addEventListener('click', (e) => {
+                const directory = document.getElementById('directory').value
+                const files = createFiles(directory)
+                streamFiles(directory, files, (hash) => {
+                    log(`Directory hash: ${hash}`)
+                    localStorage.hash = hash;
+                    document.getElementById('hash').value = hash;
+                })
+            })
+            document.getElementById('read').addEventListener('click', (e) => {
+                const directory = document.getElementById('directory').value
+                const directoryHash = document.getElementById('hash').value
+
+                ipfs.ls(directoryHash, (err, files) => {
+                    if (err) {
+                        return log(`There was an error listing the files ${err}`)
+                    }
+
+                    log(`Directory contents: ${directory}/${directoryHash}`)
+
+                    log(files);
+                    files.forEach(async (file, index) => {
+                        const buffer = await ipfs.cat(file.path)
+                        const content = buffer.toString('utf8')
+                        log(` ${index}: ${file.path}: ${content}`)
+                    });
+                })
+            })
+        })
+        function createFiles(directory) {
+            const filename = document.getElementById('filename').value,
+                fileContent = document.getElementById('textin').value
+            return [{
+                path: `${directory}/${filename}`,
+                content: Buffer.from(fileContent, 'utf8') // content could be a stream or a url
+            }, {
+                path: `${directory}/test.txt`,
+                content: Buffer.from('test test', 'utf8')
+            }]
+        }
+
+        /////////////////////////////////////////////////
+
+        function streamFiles(directory, files, cb) {
+            // Create a stream to write files to
+            const stream = ipfs.addReadableStream()
+            stream.on('data', function (data) {
+                log(`Added ${data.path} hash: ${data.hash}`)
+
+                // The last data event will contain the directory hash
+                if (data.path === directory) {
+                    cb(data.hash)
+                }
+            })
+
+            // Add the files one by one
+            files.forEach(file => stream.write(file))
+
+            // When we have no more files to add, close the stream
+            stream.end()
+        }
+
+
+
+        function log(line) {
+            if (typeof line == 'string')
+                document.getElementById('output').appendChild(document.createTextNode(`${line}\n`))
+            else
+            console.log(line);
+        }
+
+    </script>
+</body>
+
+</html>
