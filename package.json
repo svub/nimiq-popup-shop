@@ -2,8 +2,10 @@
   "name": "nimiq-popup-shop",
   "version": "1.0.0",
   "description": "Client side, decentralized, minimal shop solution using IPFS and the Nimiq blockchain.",
-  "main": "shop.js",
+  "main": "nimiq-shop.js",
+  "module": "nimiq-shop.js",
   "scripts": {
+    "start": "webpack-dev-server --hot",
     "test": "karma start"
   },
   "repository": {
@@ -24,12 +26,23 @@
   },
   "homepage": "https://github.com/svub/nimiq-popup-shop#readme",
   "devDependencies": {
-    "http-server": "^0.11.1",
+    "@nimiq/core-types": "^1.4.2",
+    "css-loader": "^3.2.0",
+    "dotenv-webpack": "^1.7.0",
+    "html-webpack-plugin": "^3.2.0",
     "jasmine-core": "^3.1.0",
     "karma": "^4.0.0",
-    "karma-jasmine": "^1.1.2"
+    "karma-jasmine": "^1.1.2",
+    "style-loader": "^1.0.0",
+    "ts-loader": "^6.2.0",
+    "typescript": "^3.6.3",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.1"
   },
   "dependencies": {
-    "@nimiq/hub-api": "^1.0.1"
+    "@nimiq/hub-api": "^1.0.1",
+    "@nimiq/style": "^0.7.5",
+    "lit-element": "^2.2.1"
   }
 }
