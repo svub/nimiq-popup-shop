@@ -46,7 +46,7 @@ export class DummyShopStorage implements ShopStorage {
   }
 
   async list(privateKey: string): Promise<Order[]> {
-    let encrypted: String[] = [];
+    let encrypted: string[] = [];
     for (let x = 0; x < localStorage.length; x++) {
         const key = localStorage.key(x);
         if (key.startsWith(this.namespace)) {
@@ -54,9 +54,10 @@ export class DummyShopStorage implements ShopStorage {
         }
     }
     // TODO(sectore) Fix types
-    return encrypted.map(
-      async o => await decryptObject(o)
-    );
+    // return encrypted.map(
+    //   async o => await decryptObject<Order>(o)
+    // );
+    return [];
   }
 }
 

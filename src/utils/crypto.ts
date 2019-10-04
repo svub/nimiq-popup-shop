@@ -38,6 +38,17 @@ export const loadKey = async () => {
   return importedKey || (importedKey = await importKey(key));
 }
 
+let pk = null;
+
+const loadPk = async () => {
+  // return this.pk || (this.pk = await Crypto.importKey(localStorage.privateKey));
+  // return this.pk ? this.pk : this.pk = await Crypto.importKey(localStorage.privateKey);
+  if (!pk) {
+      pk = await importKey(localStorage.privateKey);
+  }
+  return pk;
+}
+
 export const hash = async(s: string) => {
   const data = encoder.encode(s);
   return await crypto.subtle.digest(ALGORITHM.hash, data);
@@ -77,7 +88,7 @@ export const encryptRaw = async (data: Uint8Array): Promise<string> => {
 
 export const decryptRaw = async(data: string): Promise<ArrayBuffer> => {
     const encoded = encoder.encode(data);
-    return await crypto.subtle.decrypt(ALGORITHM, await this.loadPk(), encoded);
+    return await crypto.subtle.decrypt(ALGORITHM, await loadPk(), encoded);
 }
 
 export const decryptString = async (data: string) => {
@@ -85,7 +96,7 @@ export const decryptString = async (data: string) => {
     return decoder.decode(decrypted);
 }
 
-export const decryptObject = async (data) => {
+export const decryptObject = async <T>(data: string): Promise<T> => {
     const decrypted = await decryptString(data);
-    return JSON.parse(decrypted);
+    return JSON.parse(decrypted) as T;
 }
