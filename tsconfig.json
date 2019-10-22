@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "es2017",
+    "module": "es2015",
+    "moduleResolution": "node",
+    "lib": [
+      "es2017", 
+      "dom"
+    ],
+  "experimentalDecorators": true
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.js",
+    "types/Nimiq.d.ts",
+    "types/IE.d.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

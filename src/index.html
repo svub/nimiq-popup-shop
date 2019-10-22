@@ -6,30 +6,40 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Muli:400,600,700" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@nimiq/style@v0/nimiq-style.min.css" rel="stylesheet">
-    <title>Nimiq Pop-Up Shop - Dummy</title>
+    <title>Nimiq Pop-Up Shop</title>
 </head>
 <body class="nq-style">
-    <h1>Nimiq Pop-Up Shop - Dummy</h1>
-
-    <button>Buy!</button>
-
-    <script type="module">
-        import Shop from './js/shop.js';
-
-        const shop = new Shop();
-        const buy = document.getElementsByTagName('button')[0];
-
-        buy.addEventListener('click', e => {
-            const products = [{
-                name: 'Bonbon',
-                price: 1,
-            }];
-            const meta = {
-                userName: 'dummy',
-                email: 'yes',
-            }
-            shop.checkout(products, meta);
-        });
-    </script>
+  <h1 class="nq-h1">Nimiq Pop-Up Shop</h1>
+    <!-- product A-->
+    <div class="nq-card">
+        <div class="nq-card-header">
+            <h1 class="nq-h1">Product A</h1>
+        </div>
+        <div class="nq-card-body">
+            <p>Description of Product A.</p>
+        </div>
+        <div class="nq-card-footer">
+          <nimiq-shop-checkout-button
+            name="Product A"
+            price="110000"
+            label="Buy"
+            >
+          </nimiq-shop-checkout-button>
+        </div>
+    </div>
+    <!-- product B -->
+    <div class="nq-card">
+        <div class="nq-card-header">
+            <h1 class="nq-h1">Product B</h1>
+        </div>
+        <div class="nq-card-body">
+            <p>Description of Product B.</p>
+        </div>
+        <div class="nq-card-footer">
+          <!-- no attributes are set, which should show an error -->
+          <nimiq-shop-checkout-button>
+          </nimiq-shop-checkout-button>
+        </div>
+    </div>
 </body>
 </html>

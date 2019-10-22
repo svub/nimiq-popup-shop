@@ -1,0 +1,52 @@
+{
+  "name": "nimiq-popup-shop",
+  "version": "1.0.0",
+  "description": "Client side, decentralized, minimal shop solution using IPFS and the Nimiq blockchain.",
+  "main": "nimiq-shop.js",
+  "module": "nimiq-shop.js",
+  "scripts": {
+    "start": "webpack-dev-server --config ./webpack.development.js",
+    "build": "webpack --config ./webpack.production.js",
+    "test": "karma start --single-run --browsers ChromeHeadless karma.conf.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/svub/nimiq-popup-shop.git"
+  },
+  "keywords": [
+    "nimiq",
+    "ipfs",
+    "shop",
+    "javascript",
+    "client-side"
+  ],
+  "author": "Sven Buschbeck, Jens Krause",
+  "license": "GPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/svub/nimiq-popup-shop/issues"
+  },
+  "homepage": "https://github.com/svub/nimiq-popup-shop#readme",
+  "devDependencies": {
+    "@nimiq/core-types": "^1.4.2",
+    "@types/jasmine": "^3.4.2",
+    "css-loader": "^3.2.0",
+    "dotenv-webpack": "^1.7.0",
+    "html-webpack-plugin": "^3.2.0",
+    "jasmine-core": "^3.5.0",
+    "karma": "^4.3.0",
+    "karma-chrome-launcher": "^3.1.0",
+    "karma-jasmine": "^2.0.1",
+    "karma-webpack": "^4.0.2",
+    "style-loader": "^1.0.0",
+    "ts-loader": "^6.2.0",
+    "typescript": "^3.6.3",
+    "webpack": "^4.41.0",
+    "webpack-cli": "^3.3.9",
+    "webpack-dev-server": "^3.8.2"
+  },
+  "dependencies": {
+    "@nimiq/hub-api": "^1.0.1",
+    "@nimiq/style": "^0.7.5",
+    "lit-element": "^2.2.1"
+  }
+}
