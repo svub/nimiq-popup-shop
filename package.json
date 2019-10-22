@@ -20,7 +20,7 @@
     "javascript",
     "client-side"
   ],
-  "author": "Sven Buschbeck",
+  "author": "Sven Buschbeck, Jens Krause",
   "license": "GPL-3.0-or-later",
   "bugs": {
     "url": "https://github.com/svub/nimiq-popup-shop/issues"

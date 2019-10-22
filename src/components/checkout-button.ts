@@ -33,7 +33,7 @@ export class CheckoutButton extends LitElement {
   label = '';
 
   protected get hasLabel(): Boolean {
-    return this.label != '' && this.label.length > 0
+    return this.label.trim().length > 0
   }
 
   @property({type: String}) 
