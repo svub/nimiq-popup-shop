@@ -1,4 +1,4 @@
-// support IE11
+// support IE
 declare interface Window {
   msCrypto: Crypto;
 }

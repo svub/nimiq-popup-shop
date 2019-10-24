@@ -15,7 +15,8 @@ const config = Object.assign({}, common, {
     progress: true,
     port: 3333,
     stats: 'errors-only',
-    contentBase: PATHS.src
+    contentBase: PATHS.src,
+    hot: true
   },
   cache: true,
   devtool: 'eval-source-map',

@@ -16,11 +16,22 @@ export class NimiqShop extends LitElement {
 
   connectedCallback() {
     super.connectedCallback()
-    // set address to checkout buttons
-    let buttons = this.getElementsByTagName('nimiq-shop-checkout-button')
+    const buttons = this.getElementsByTagName('nimiq-shop-checkout-button')
     for (let i = 0; i < buttons.length; i++) {
-      buttons[i].setAttribute('shop-address', this.address)
+      buttons[i].addEventListener('checkout', this.checkout);
     }
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback()
+    const buttons = this.getElementsByTagName('nimiq-shop-checkout-button')
+    for (let i = 0; i < buttons.length; i++) {
+      buttons[i].removeEventListener('checkout', this.checkout);
+    }
+  }
+
+  protected checkout(ev: CustomEvent): void {
+    console.log("checkout", ev)
   }
   
   render() {
