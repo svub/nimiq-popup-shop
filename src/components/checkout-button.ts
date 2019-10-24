@@ -3,7 +3,9 @@ import buttonStyles from '../styles/buttons'
 import typographyStyles from '../styles/typography'
 import themeStyles from '../styles/theme'
 
-@customElement('nimiq-shop-checkout-button')
+export const TAG_NAME = 'nimiq-shop-checkout-button';
+
+@customElement(TAG_NAME)
 export class CheckoutButton extends LitElement {
 
   static get styles() {
@@ -15,7 +17,7 @@ export class CheckoutButton extends LitElement {
   }
 
   /**
-   * Name of the product to buy
+   * Optional label of the button - if not provided, product name will be used.
    */
   @property({type: String}) 
   label = '';
@@ -30,12 +32,8 @@ export class CheckoutButton extends LitElement {
   @property({type: String}) 
   name = '';
   
-  protected get hasName(): Boolean {
-    return this.name.trim().length > 0
-  }
-  
   /**
-   * Price of the product to buy
+   * Price of the product to buy in NIM, minimum `0.00001`
    */
   @property({type: Number}) 
   price = 0;
@@ -82,19 +80,13 @@ export class CheckoutButton extends LitElement {
   buttonColor = '';
   
   protected get buttonColorClass(): String {
-    let clazz: String;
-    switch (this.buttonColor) {
-      case 'light-blue':
-      case 'green':
-      case 'orange':
-      case 'red':
-      case 'gold':
-        clazz = this.buttonColor
-        break;
-      default: 
-        clazz = ''
-    }
-    return clazz;
+    return [
+      'light-blue',
+      'green',
+      'orange',
+      'red',
+      'gold'
+      ].includes(this.buttonColor) ? this.buttonColor : '';
   }
 
   protected get classNames(): String {

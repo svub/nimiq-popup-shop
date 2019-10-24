@@ -1,3 +1,3 @@
-import './polyfills/custom-event'
+import './polyfills'
 import './components/shop'
 import './components/checkout-button'
