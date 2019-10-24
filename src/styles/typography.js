@@ -1,4 +1,4 @@
-import { css } from 'lit-element';
+import { css } from 'lit-element'
 
 // https://github.com/nimiq/nimiq-style/blob/master/src/typography.css
 export default css`
