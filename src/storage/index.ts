@@ -9,9 +9,9 @@ export interface Storage {
 }
 
 export class StorageProvider {
-    static get(repository: string, production: boolean = (process.env.production == 'true')):Promise<Storage> {
+    static get(repository: string, production: boolean = (process.env.production == 'true')): Storage {
         return production
-            ? IpfsStorage.create(repository)
-            : new Promise(resolve => resolve(new DummyStorage(repository)));
+            ? new IpfsStorage(repository)
+            : new DummyStorage(repository);
     }
 }

@@ -1,5 +1,5 @@
-import { encryptObject, decryptObject } from './utils/crypto';
-import { Order } from './types/shop'
+import { encryptObject, decryptObject } from '../utils/crypto';
+import { Order } from '../types/shop'
 import { Storage } from './index'
 
 export class DummyStorage implements Storage {
@@ -10,10 +10,6 @@ export class DummyStorage implements Storage {
   constructor(repository: string) {
     this.repository = repository;
     this.namespace = `dummy-${this.repository}`;
-  }
-
-  // TODO(sectore): Do we still need this static `create` function?
-  static async create(repository: string): Promise<DummyShopStorage> {
   }
 
   protected _id(id: string): string {
