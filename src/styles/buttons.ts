@@ -1,7 +1,7 @@
 import { css } from 'lit-element';
 
 // https://github.com/nimiq/nimiq-style/blob/master/src/buttons.css
-export const buttonStyle = css`
+export default css`
   .nq-button::-moz-focus-inner,
   .nq-button-s::-moz-focus-inner {
       border: 0;

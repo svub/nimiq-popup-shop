@@ -9,37 +9,58 @@
     <title>Nimiq Pop-Up Shop</title>
 </head>
 <body class="nq-style">
-  <h1 class="nq-h1">Nimiq Pop-Up Shop</h1>
+  <nimiq-shop>
+    <h1 class="nq-h1">Nimiq Pop-Up Shop</h1>
     <!-- product A-->
     <div class="nq-card">
-        <div class="nq-card-header">
-            <h1 class="nq-h1">Product A</h1>
-        </div>
-        <div class="nq-card-body">
-            <p>Description of Product A.</p>
-        </div>
-        <div class="nq-card-footer">
+      <div class="nq-card-header">
+        <h1 class="nq-h1">Product A</h1>
+      </div>
+      <div class="nq-card-body">
+        <p>Description of Product A.</p>
+      </div>
+      <div class="nq-card-footer">
           <nimiq-shop-checkout-button
             name="Product A"
             price="110000"
             label="Buy"
-            >
-          </nimiq-shop-checkout-button>
-        </div>
+            buttonColor="gold"
+          >
+        </nimiq-shop-checkout-button>
+      </div>
     </div>
     <!-- product B -->
     <div class="nq-card">
-        <div class="nq-card-header">
-            <h1 class="nq-h1">Product B</h1>
-        </div>
-        <div class="nq-card-body">
-            <p>Description of Product B.</p>
+      <div class="nq-card-header">
+        <h1 class="nq-h1">Product B</h1>
+      </div>
+      <div class="nq-card-body">
+          <p>Description of Product B.</p>
+          <p>Small button + inverse + red</p>
         </div>
         <div class="nq-card-footer">
-          <!-- no attributes are set, which should show an error -->
-          <nimiq-shop-checkout-button>
+          <nimiq-shop-checkout-button
+            name="Product B"
+            price="12000"
+            inverse
+            buttonColor="red"
+          >
           </nimiq-shop-checkout-button>
         </div>
-    </div>
-</body>
+      </div>
+
+      <div class="nq-card">
+          <nimiq-shop-checkout-button
+            label="Small checkout button, disabled"
+            disable
+            small>
+          </nimiq-shop-checkout-button>
+          <nimiq-shop-checkout-button
+            label="Pill, red checkout button"
+            buttonColor="red"
+            pill>
+          </nimiq-shop-checkout-button>
+        </div>
+    </nimiq-shop>
+  </body>
 </html>

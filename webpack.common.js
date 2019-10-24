@@ -28,14 +28,7 @@ const common = {
   resolve: {
     extensions: [ '.tsx', '.ts', '.js' ],
   },
-  plugins: [], 
-  devServer: {
-    inline: true,
-    progress: true,
-    port: 3333,
-    stats: 'errors-only',
-    contentBase: PATHS.src
-  }
+  plugins: [],
 }
 
 module.exports = {

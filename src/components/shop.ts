@@ -1,5 +1,7 @@
 import { LitElement, html, property, customElement } from 'lit-element';
+import {TAG_NAME as BUTTON_TAG_NAME} from './checkout-button';
 
+const TAG_NAME = 'nimiq-shop';
 
 /**
  * <nimiq-shop> web component
@@ -9,18 +11,27 @@ import { LitElement, html, property, customElement } from 'lit-element';
  * @class NimiqShop
  * @extends {LitElement}
  */
-@customElement('nimiq-shop')
+@customElement(TAG_NAME)
 export class NimiqShop extends LitElement {
   @property({type: String}) 
   address = '';
 
   connectedCallback() {
     super.connectedCallback()
-    // set address to checkout buttons
-    let buttons = this.getElementsByTagName('nimiq-shop-checkout-button')
-    for (let i = 0; i < buttons.length; i++) {
-      buttons[i].setAttribute('shop-address', this.address)
+    for (let button of document.getElementsByTagName(BUTTON_TAG_NAME) ) {
+      button.addEventListener('checkout', this.checkout);
     }
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback()
+    for (let button of this.getElementsByTagName(BUTTON_TAG_NAME)) {
+      button.removeEventListener('checkout', this.checkout);
+    }
+  }
+
+  protected checkout(ev: CustomEvent): void {
+    console.log("checkout", ev)
   }
   
   render() {

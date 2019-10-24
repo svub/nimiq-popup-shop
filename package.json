@@ -46,7 +46,7 @@
   },
   "dependencies": {
     "@nimiq/hub-api": "^1.0.1",
-    "@nimiq/style": "^0.7.5",
+    "core-js": "^3.3.3",
     "lit-element": "^2.2.1"
   }
 }

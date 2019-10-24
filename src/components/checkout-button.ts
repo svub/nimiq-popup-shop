@@ -1,127 +1,121 @@
-import { LitElement, html, property, customElement, css} from 'lit-element';
-import {buttonStyle} from '../styles/buttons'
-import {typographyStyle} from '../styles/typography'
-import { Product, OrderMeta, Order, CheckoutOptions } from '../types/shop';
-import HubApi from '@nimiq/hub-api';
-import { DummyShopStorage, IpfsShopStorage, ShopStorage } from '../storage';
+import { LitElement, html, property, customElement} from 'lit-element';
+import buttonStyles from '../styles/buttons'
+import typographyStyles from '../styles/typography'
+import themeStyles from '../styles/theme'
 
-enum SubmitState {
-  NotSubmitted,
-  Submitting,
-  SubmitSucceed,
-  SubmitFailed
-}
+export const TAG_NAME = 'nimiq-shop-checkout-button';
 
-@customElement('nimiq-shop-checkout-button')
+@customElement(TAG_NAME)
 export class CheckoutButton extends LitElement {
 
-    static get styles() {
-      return [
-        buttonStyle,
-        typographyStyle
-        , css`:host ul {
-          list-style: none;
-        }`
-      ]
-    }
+  static get styles() {
+    return [
+      themeStyles,
+      buttonStyles,
+      typographyStyles
+    ]
+  }
 
-  // will be set by 'nimiq-shop'
-  @property({type: String, attribute: 'shop-address'}) 
-  shopAddress = '';
-
+  /**
+   * Optional label of the button - if not provided, product name will be used.
+   */
   @property({type: String}) 
   label = '';
-
+  
   protected get hasLabel(): Boolean {
     return this.label.trim().length > 0
   }
-
-  @property({type: String}) 
-  name = null;
-
-  @property({type: String, attribute: 'button-class'}) 
-  buttonClass = 'nq-button';
   
+  /**
+   * Name of the product to buy
+   */
+  @property({type: String}) 
+  name = '';
+  
+  /**
+   * Price of the product to buy in NIM, minimum `0.00001`
+   */
   @property({type: Number}) 
   price = 0;
+
+  /**
+   * Flag to inverse button style
+   */
+  @property({type: Boolean}) 
+  inverse = false;
+
+  protected get buttonInverseClass(): String {
+    return (this.inverse) ? 'inverse' : ''
+  }
+
+  /**
+   * Flag to style a small button size
+   */
+  @property({type: Boolean}) 
+  small = false;
+
+  /**
+   * Flag to style a pill button
+   */
+  @property({type: Boolean}) 
+  pill = false;
   
-  @property({type: SubmitState}) 
-  submitState = SubmitState.NotSubmitted;
+  protected get buttonClass(): String {
+    return (this.small) 
+      ? 'nq-button-s' : (this.pill) 
+        ? 'nq-button-pill' 
+        : 'nq-button'
+  }
+  
+  /**
+   * Flag to disable the button
+   */
+  @property({type: Boolean}) 
+  disable = false;
 
-  // error messages
-  errors: String[] = []
-
-  // Nimiq Hub Api
-  hubApi: HubApi = new HubApi(process.env.HUB_API)
-
-  // Storage
-  // TODO(sectore): Put 'repo' into storage
-  storage: ShopStorage = process.env.production ? 
-    new IpfsShopStorage('') : new DummyShopStorage('')
-
-  protected get hasErrors(): Boolean {
-    return this.errors.length > 0
+  /**
+   * Button color class
+   */
+  @property({type: String}) 
+  buttonColor = '';
+  
+  protected get buttonColorClass(): String {
+    return [
+      'light-blue',
+      'green',
+      'orange',
+      'red',
+      'gold'
+      ].includes(this.buttonColor) ? this.buttonColor : '';
   }
 
-  connectedCallback() {
-    super.connectedCallback()
-    console.log(`checkout button for ${this.name} connected`)
-    this.validate()
+  protected get classNames(): String {
+    let classes = [
+      this.buttonClass,
+      this.buttonColorClass,
+      this.buttonInverseClass,
+    ];
+    return classes.join(' ')
   }
 
-  attributeChangedCallback(name, oldval, newval) {
-    // console.log('attribute change: ', name, newval);
-    super.attributeChangedCallback(name, oldval, newval);
-  }
-
-  protected validate():void {
-    this.errors = []
-    if (this.price <= 0) {
-      this.errors.push(`Missing or invalid price`)
-    }
-    if (this.name == null || this.name == '') {
-      this.errors.push(`Missing product name`)
-    }
-    // TODO: Add a proper validation of an Nimiq address
-    if (this.shopAddress == '') {
-      this.errors.push(`Missing or invalid address ${this.shopAddress}`)
-    }
-  }
-
-  protected async checkout(product: Product, meta: OrderMeta): Promise<void> {
-    const options: CheckoutOptions = {
-      appName: this.name,
-      recipient: process.env.SHOP_ADDRESS,
-      value: this.price * 1e5,
-      // TODO(sectore): Fix unsafe fee value 
-      fee: parseInt(process.env.SHOP_FEE),
-      shopLogoUrl: process.env.SHOP_LOGO,
-    };
-    // SignedTransaction
-    const signedTx = await this.hubApi.checkout(options);
-    console.log(signedTx);
-
-    const order: Order = {
-      price: this.price,
-      products: [product],
-      meta,
-      txHash: signedTx.hash,
-      timestamp: new Date().getTime(),
-    }
-    const orderId = await this.storage.store(order)
-    console.log('orderId', orderId)
+  clickHandler(ev: Event):void {
+    const event = new CustomEvent('checkout', {
+      detail: {
+        product: this.name, 
+        price: this.price
+      }
+    });
+    this.dispatchEvent(event);
   }
 
   render() {
-    return html`<div>
-      <button class="nq-button" ?disabled="${this.hasErrors}">${this.hasLabel ? this.label : this.name}</button>
-      <!-- ${this.shopAddress ?
-         html`<p>Shop address ${this.shopAddress}</p>`:``}  -->
-      ${this.hasErrors ?
-        html`<ul>
-          ${this.errors.map(e => html`<li><p class="nq-notice error">${e}</p></li>`)}
-        </ul>` : ``
-    }
-    </div>`;
+    return html`
+      <button 
+        class="${this.classNames}"
+        ?disabled="${this.disable}"
+        class="nq-button"
+        @click="${this.clickHandler}">
+          ${this.hasLabel ? this.label : this.name}
+      </button>`;
   }
 }
