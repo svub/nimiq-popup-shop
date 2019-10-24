@@ -1,7 +1,7 @@
 import { Order } from "../types/shop"
-import { Storage } from './index'
+import { StorageBackend } from './index'
 
-export class IpfsStorage implements Storage {
+export class IpfsStorage implements StorageBackend {
 
   protected repository: string;
   protected ipfs: Object;
@@ -13,19 +13,19 @@ export class IpfsStorage implements Storage {
     this.ipfs =  repository;
   }
 
-  store(order: Order): Promise<string> {
+  store(data: Uint8Array): Promise<string> {
     console.warn('not implemented!');
     // TODO(sectore): Implementation
     return null
   }
 
-  load(id: string, privateKey: string): Promise<Order> {
+  load(id: string): Promise<Uint8Array> {
     console.warn('not implemented!');
     // TODO(sectore): Implementation
     return null
   }
 
-  list(privateKey: string): Promise<Order[]> {
+  list(): Promise<Uint8Array[]> {
     console.warn('not implemented!');
     // TODO(sectore): Implementation
     return null
