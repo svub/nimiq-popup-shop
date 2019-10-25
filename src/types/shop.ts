@@ -1,3 +1,5 @@
+import { NimiqShop } from "../components/shop"
+
 export type Product = {
   name: string
   price: number
