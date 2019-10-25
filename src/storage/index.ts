@@ -30,15 +30,15 @@ export class Storage {
     this.encryption = encryption ? new WebCrypto() : new DummyEncryption()
   }
 
-  public async store(order: Order): Promise<string> {
+  async store(order: Order): Promise<string> {
     return this.backend.store(await this.encryption.encrypt(this.encode(order)))
   }
-  public async load(id: string): Promise<Order> {
+  async load(id: string): Promise<Order> {
     return this.decode(
       await this.encryption.decrypt(await this.backend.load(id))
     )
   }
-  public async list(): Promise<Order[]> {
+  async list(): Promise<Order[]> {
     return Promise.all(
       (await this.backend.list()).map(async data =>
         this.decode(await this.encryption.decrypt(data)),
@@ -52,7 +52,7 @@ export class Storage {
   encode(order: Order): Uint8Array {
     return this.encoder.encode(JSON.stringify(order))
   }
-  
+
   decode(data: Uint8Array): Order {
     return JSON.parse(this.decoder.decode(data))
   }
