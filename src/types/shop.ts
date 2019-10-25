@@ -1,16 +1,14 @@
+import { NimiqShop } from "../components/shop"
+
 export type Product = {
   name: string
   price: Nimiq.Transaction
 }
 
-export type OrderMeta = {
-  sender: Nimiq.Address
-}
-
 export type Order = {
   price: number
   products: Product[]
-  meta: OrderMeta
+  meta: string
   txHash: string // HEX
   timestamp: number
 }
@@ -23,4 +21,15 @@ export type CheckoutOptions = {
   shopLogoUrl?: string
   fee?: number
   extraData?: string
+}
+
+export type ShopConfiguartion = {
+  address: Nimiq.Address
+  name: string
+  logo?: string
+  id: string
+  publicKey: string
+  fee?: number
+  live?: boolean
+  hubUrl?: string
 }
