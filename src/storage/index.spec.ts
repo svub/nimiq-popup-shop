@@ -35,10 +35,10 @@ describe('storage', () => {
     expect(orders[0]).toEqual(order)
   })
 
-  it('load corrupted order', async () => {
+  it('list corrupted order', async () => {
     const storage = new Storage('test', false, false)
 
-    const id = await storage.store(order)
+    await storage.store(order)
 
     expect(localStorage.length == 1)
 
