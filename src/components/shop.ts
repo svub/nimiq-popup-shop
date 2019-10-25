@@ -1,7 +1,13 @@
-import { LitElement, html, property, customElement } from 'lit-element';
-import {TAG_NAME as BUTTON_TAG_NAME} from './checkout-button';
+import {
+  LitElement,
+  html,
+  property,
+  customElement,
+  TemplateResult,
+} from 'lit-element'
+import { TAG_NAME as BUTTON_TAG_NAME } from './checkout-button'
 
-const TAG_NAME = 'nimiq-shop';
+const TAG_NAME = 'nimiq-shop'
 
 /**
  * <nimiq-shop> web component
@@ -13,32 +19,32 @@ const TAG_NAME = 'nimiq-shop';
  */
 @customElement(TAG_NAME)
 export class NimiqShop extends LitElement {
-  @property({type: String}) 
-  address = '';
+  @property({ type: String })
+  address = ''
 
-  connectedCallback() {
+  connectedCallback(): void {
     super.connectedCallback()
-    for (let button of document.getElementsByTagName(BUTTON_TAG_NAME) ) {
-      button.addEventListener('checkout', this.checkout);
+    for (const button of document.getElementsByTagName(BUTTON_TAG_NAME)) {
+      button.addEventListener('checkout', this.checkout)
     }
   }
 
-  disconnectedCallback() {
+  disconnectedCallback(): void {
     super.disconnectedCallback()
-    for (let button of this.getElementsByTagName(BUTTON_TAG_NAME)) {
-      button.removeEventListener('checkout', this.checkout);
+    for (const button of this.getElementsByTagName(BUTTON_TAG_NAME)) {
+      button.removeEventListener('checkout', this.checkout)
     }
   }
 
   protected checkout(ev: CustomEvent): void {
-    console.log("checkout", ev)
+    console.log('checkout', ev)
   }
-  
-  render() {
+
+  render(): TemplateResult {
     // Render all nested children using <slot/>
     // https://lit-element.polymer-project.org/guide/templates#render-light-dom-children-with-the-slot-element
     return html`
       <slot></slot>
-    `;
+    `
   }
 }
