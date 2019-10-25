@@ -1,4 +1,11 @@
-import { LitElement, html, property, customElement } from 'lit-element';
+import {
+  LitElement,
+  html,
+  property,
+  customElement,
+  TemplateResult,
+  CSSResult,
+} from 'lit-element'
 import buttonStyles from '../styles/buttons'
 import typographyStyles from '../styles/typography'
 import themeStyles from '../styles/theme'
@@ -15,9 +22,9 @@ export class CheckoutButton extends LitElement {
    * Optional label of the button - if not provided, product name will be used.
    */
   @property({ type: String })
-  label = '';
+  label = ''
 
-  protected get hasLabel(): Boolean {
+  protected get hasLabel(): boolean {
     return this.label.trim().length > 0
   }
 
@@ -25,7 +32,7 @@ export class CheckoutButton extends LitElement {
    * Name of the product to buy
    */
   @property({ type: String })
-  name = '';
+  name = ''
 
   /**
    * Price of the product to buy in NIM, minimum `0.00001`
