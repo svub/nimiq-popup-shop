@@ -11,8 +11,8 @@ export interface StorageBackend {
 }
 
 export interface Encryption {
-  encrypt(data:Uint8Array):Promise<Uint8Array>
-  decrypt(data:Uint8Array):Promise<Uint8Array>
+  encrypt(data: Uint8Array): Promise<Uint8Array>
+  decrypt(data: Uint8Array): Promise<Uint8Array>
 }
 
 export class Storage {
@@ -35,7 +35,7 @@ export class Storage {
   }
   async load(id: string): Promise<Order> {
     return this.decode(
-      await this.encryption.decrypt(await this.backend.load(id))
+      await this.encryption.decrypt(await this.backend.load(id)),
     )
   }
   async list(): Promise<Order[]> {
