@@ -2,7 +2,6 @@ import { Storage } from '.'
 import { Order } from '../types/shop'
 
 const order: Order = {
-  price: 1,
   meta: null,
   products: [],
   timestamp: new Date().getMilliseconds(),
