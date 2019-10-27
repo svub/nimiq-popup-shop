@@ -6,8 +6,6 @@ import {
 } from './types/shop'
 import { Storage } from './storage'
 import HubApi from '@nimiq/hub-api'
-// TODO(svub) Is there a clean way to import this type: https://github.com/nimiq/hub/blob/574adcf5880c150b7b9d3cb016aeea78034c1316/src/lib/PublicRequestTypes.ts#L44 ?
-import { SignedTransaction } from '@nimiq/hub-api/dist/src/src/lib/PublicRequestTypes'
 
 export class Shop {
   private configuration: ShopConfiguartion
@@ -37,7 +35,7 @@ export class Shop {
     return orderId
   }
 
-  private async pay(price: number): Promise<SignedTransaction> {
+  private async pay(price: number): Promise<HubApi.SignedTransaction> {
     const { name, address, fee, logo } = this.configuration
     const options: CheckoutOptions = {
       appName: name,
@@ -52,7 +50,7 @@ export class Shop {
   private async order(
     products: Product[],
     meta: string,
-    signedTx: SignedTransaction,
+    signedTx: HubApi.SignedTransaction,
   ): Promise<string> {
     const order: Order = {
       products,
