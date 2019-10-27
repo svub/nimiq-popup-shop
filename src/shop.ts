@@ -5,6 +5,9 @@ import {
   Order,
 } from './types/shop'
 import { Storage } from './storage'
+import HubApi from '@nimiq/hub-api'
+// TODO(svub) Is there a clean way to import this type: https://github.com/nimiq/hub/blob/574adcf5880c150b7b9d3cb016aeea78034c1316/src/lib/PublicRequestTypes.ts#L44 ?
+import { SignedTransaction } from '@nimiq/hub-api/dist/src/src/lib/PublicRequestTypes'
 
 export class Shop {
   private configuration: ShopConfiguartion
@@ -22,7 +25,7 @@ export class Shop {
   }
 
   // TODO(svub) Q: Meta data is to be freely defined by shop owner. String or Object? (will be run through JSON.stringify anyhow)
-  async checkout(products: Product[], meta: string): string {
+  async checkout(products: Product[], meta: string): Promise<string> {
     const price =
       products
         .map(product => product.price)
@@ -34,7 +37,7 @@ export class Shop {
     return orderId
   }
 
-  private async pay(price: number): SignedTransaction {
+  private async pay(price: number): Promise<SignedTransaction> {
     const { name, address, fee, logo } = this.configuration
     const options: CheckoutOptions = {
       appName: name,
@@ -43,14 +46,12 @@ export class Shop {
       fee,
       shopLogoUrl: logo,
     }
-    // TODO(svub) How to import/load this type here: https://github.com/nimiq/hub/blob/574adcf5880c150b7b9d3cb016aeea78034c1316/src/lib/PublicRequestTypes.ts#L44 ?
     return await this.hubApi.checkout(options)
   }
 
   private async order(
     products: Product[],
     meta: string,
-    // TODO(svub) see above
     signedTx: SignedTransaction,
   ): Promise<string> {
     const order: Order = {
