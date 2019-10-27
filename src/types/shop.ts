@@ -1,16 +1,13 @@
 export type Product = {
   name: string
-  price: Nimiq.Transaction
-}
-
-export type OrderMeta = {
-  sender: Nimiq.Address
+  price: number
 }
 
 export type Order = {
-  price: number
+  // TODO(svub) Q: price is part of product >> would consider it redudant info here (?)
+  //price: number
   products: Product[]
-  meta: OrderMeta
+  meta?: JSON
   txHash: string // HEX
   timestamp: number
 }
@@ -23,4 +20,15 @@ export type CheckoutOptions = {
   shopLogoUrl?: string
   fee?: number
   extraData?: string
+}
+
+export type ShopConfiguartion = {
+  address: string
+  name: string
+  logo?: string
+  id: string
+  publicKey: string
+  fee?: number
+  live?: boolean
+  hubUrl?: string
 }

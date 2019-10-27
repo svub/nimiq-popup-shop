@@ -3,7 +3,7 @@ import { StorageBackend } from './index'
 
 export class IpfsStorage implements StorageBackend {
   protected repository: string
-  protected ipfs: Record<string, any>
+  protected ipfs
 
   constructor(repository: string) {
     this.repository = repository

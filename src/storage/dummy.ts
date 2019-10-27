@@ -1,5 +1,3 @@
-import { encryptObject, decryptObject } from '../utils/crypto'
-import { Order } from '../types/shop'
 import { StorageBackend } from './index'
 
 export class DummyStorage implements StorageBackend {
