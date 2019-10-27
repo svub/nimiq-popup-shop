@@ -1,4 +1,4 @@
-import Shop from '../js/shop.js'
+//import { Shop } from '../nimiq-shop.js'
 
 const { privateKey, publicKey } = localStorage
 const shop = new Shop()
