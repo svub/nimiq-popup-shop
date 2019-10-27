@@ -28,13 +28,20 @@ export class Shop {
     )
   }
 
-  // TODO Meta data is to be freely defined by shop owner. String or Object? (will be run through JSON.stringify anyhow)
-  async checkout(products: Product[], meta: string): Promise<string> {
+  // TODO(svub) Q: Meta data is to be freely defined by shop owner. String or Object? (will be run through JSON.stringify anyhow)
+  async checkout(products: Product[], meta: string): string {
     const price =
       products
         .map(product => product.price)
         .reduce((sum, price) => sum + price) * 1e5
 
+    const signedTx = await this.pay(price)
+    const orderId = await this.order(products, meta, signedTx)
+
+    return orderId
+  }
+
+  private async pay(price: number) {
     const options: CheckoutOptions = {
       appName: this.configuration.name,
       recipient: this.configuration.address,
@@ -42,12 +49,17 @@ export class Shop {
       fee: this.configuration.fee,
       shopLogoUrl: this.configuration.logo,
     }
-
-    // TODO what type is `signedTx`?
+    // TODO(svub) what type is `signedTx`? (also change below)
     const signedTx = await this.hubApi.checkout(options)
+    return signedTx
+  }
 
+  private async order(
+    products: Product[],
+    meta: string,
+    signedTx: any,
+  ): Promise<string> {
     const order: Order = {
-      price,
       products,
       meta,
       txHash: signedTx.hash,

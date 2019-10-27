@@ -1,10 +1,11 @@
 export type Product = {
   name: string
-  price: Nimiq.Transaction
+  price: number //TODO(svub) Q: was `Nimiq.Transaction` before. Don't understand. (?)
 }
 
 export type Order = {
-  price: number
+  // TODO(svub) Q: price is part of product >> would consider it redudant info here (?)
+  //price: number
   products: Product[]
   meta: string
   txHash: string // HEX
