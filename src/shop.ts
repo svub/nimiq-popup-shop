@@ -23,7 +23,7 @@ export class Shop {
   }
 
   // TODO(svub) Q: Meta data is to be freely defined by shop owner. String or Object? (will be run through JSON.stringify anyhow)
-  async checkout(products: Product[], meta: string): Promise<string> {
+  async checkout(products: Product[], meta: JSON): Promise<string> {
     const price =
       products
         .map(product => product.price)
@@ -49,7 +49,7 @@ export class Shop {
 
   private async order(
     products: Product[],
-    meta: string,
+    meta: JSON,
     signedTx: HubApi.SignedTransaction,
   ): Promise<string> {
     const order: Order = {
