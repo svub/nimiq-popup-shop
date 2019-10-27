@@ -22,7 +22,6 @@ export class Shop {
     )
   }
 
-  // TODO(svub) Q: Meta data is to be freely defined by shop owner. String or Object? (will be run through JSON.stringify anyhow)
   async checkout(products: Product[], meta: JSON): Promise<string> {
     const price =
       products
