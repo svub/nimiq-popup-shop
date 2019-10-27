@@ -4,8 +4,6 @@ export type Product = {
 }
 
 export type Order = {
-  // TODO(svub) Q: price is part of product >> would consider it redudant info here (?)
-  //price: number
   products: Product[]
   meta?: JSON
   txHash: string // HEX
