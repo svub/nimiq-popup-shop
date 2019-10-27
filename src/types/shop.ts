@@ -23,7 +23,7 @@ export type CheckoutOptions = {
 }
 
 export type ShopConfiguartion = {
-  address: Nimiq.Address
+  address: string
   name: string
   logo?: string
   id: string
