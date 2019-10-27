@@ -1,6 +1,6 @@
 export type Product = {
   name: string
-  price: number //TODO(svub) Q: was `Nimiq.Transaction` before. Don't understand. (?)
+  price: number
 }
 
 export type Order = {

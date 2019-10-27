@@ -12,16 +12,12 @@ export class Shop {
   private storage: Storage
 
   constructor(configuration: ShopConfiguartion) {
+    const { hubUrl, id, live } = configuration
+
     this.configuration = configuration
+    this.storage = new Storage(id, live, live)
     this.hubApi = new HubApi(
-      configuration.hubUrl
-        ? configuration.hubUrl
-        : `https://hub.nimiq${configuration.live ? '' : '-testnet'}.com`,
-    )
-    this.storage = new Storage(
-      configuration.id,
-      configuration.live,
-      configuration.live,
+      hubUrl || `https://hub.nimiq${live ? '' : '-testnet'}.com`,
     )
   }
 
@@ -38,23 +34,24 @@ export class Shop {
     return orderId
   }
 
-  private async pay(price: number) {
+  private async pay(price: number): SignedTransaction {
+    const { name, address, fee, logo } = this.configuration
     const options: CheckoutOptions = {
-      appName: this.configuration.name,
-      recipient: this.configuration.address,
+      appName: name,
+      recipient: address,
       value: price,
-      fee: this.configuration.fee,
-      shopLogoUrl: this.configuration.logo,
+      fee,
+      shopLogoUrl: logo,
     }
-    // TODO(svub) what type is `signedTx`? (also change below)
-    const signedTx = await this.hubApi.checkout(options)
-    return signedTx
+    // TODO(svub) How to import/load this type here: https://github.com/nimiq/hub/blob/574adcf5880c150b7b9d3cb016aeea78034c1316/src/lib/PublicRequestTypes.ts#L44 ?
+    return await this.hubApi.checkout(options)
   }
 
   private async order(
     products: Product[],
     meta: string,
-    signedTx: any,
+    // TODO(svub) see above
+    signedTx: SignedTransaction,
   ): Promise<string> {
     const order: Order = {
       products,
