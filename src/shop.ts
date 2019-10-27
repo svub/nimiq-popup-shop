@@ -1,5 +1,5 @@
 import {
-  ShopConfiguartion,
+  ShopConfiguration,
   Product,
   CheckoutOptions,
   Order,
@@ -8,11 +8,11 @@ import { Storage } from './storage'
 import HubApi from '@nimiq/hub-api'
 
 export class Shop {
-  private configuration: ShopConfiguartion
+  private configuration: ShopConfiguration
   private hubApi: HubApi
   private storage: Storage
 
-  constructor(configuration: ShopConfiguartion) {
+  constructor(configuration: ShopConfiguration) {
     const { hubUrl, id, live } = configuration
 
     this.configuration = configuration

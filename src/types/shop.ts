@@ -20,7 +20,7 @@ export type CheckoutOptions = {
   extraData?: string
 }
 
-export type ShopConfiguartion = {
+export type ShopConfiguration = {
   address: string
   name: string
   logo?: string
