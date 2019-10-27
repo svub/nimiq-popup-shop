@@ -7,7 +7,7 @@ export type Order = {
   // TODO(svub) Q: price is part of product >> would consider it redudant info here (?)
   //price: number
   products: Product[]
-  meta: string
+  meta?: JSON
   txHash: string // HEX
   timestamp: number
 }
