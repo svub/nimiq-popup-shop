@@ -7,69 +7,47 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Muli:400,600,700" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@nimiq/style@v0/nimiq-style.min.css" rel="stylesheet">
-    <style>
-        textarea {
-            width: 30em;
-            height: 15em;
-        }
-    </style>
-    <!-- <script type="module" src="../nimiq-shop.js"></script> -->
+    <link href="setup.css" rel="stylesheet">
+    <script type="module" src="../nimiq-shop.js"></script>
+    <script type="module" src="./setup.js"></script>
     <title>Pop-Up Shop Setup</title>
 </head>
 
 <body class="nq-style">
-    <h2>Your private key</h2>
-    <p>
-        <strong>Don't share, store safely.</strong>
-    </p>
-    <textarea id="private"></textarea>
+    <div class="nq-card">
+        <div class="nq-card-header">
+            <h2>Your private key</h2>
+        </div>
+        <div class="nq-card-body">
+            <p>
+                <strong>Don't share, store safely.</strong>
+            </p>
+            <textarea id="private"></textarea>
+        </div>
+    </div>
 
-    <h2>Your configuration</h2>
-    <p>
-        Add this to your shop config <code>config.js</code>
-    </p>
-    <p>
-        Where it says <code>key: null</code>, replace <code>null</code> with:
-    </p>
-    <textarea id="public"></textarea>
-    <p>
-        and put this as <code>repo</code>
-    </p>
-    <input type="text" id="repo">
-
-    <script type="module">
-        import config from '../config.js';
-        import Data from '../js/data.js';
-        import Crypto from '../js/crypto.js';
-
-        async function initialize() {
-            const keys = await Crypto.generateKey();
-
-            localStorage.publicKey = await Crypto.exportKey(keys.publicKey);
-            localStorage.privateKey = await Crypto.exportKey(keys.privateKey);
-            localStorage.repo = await Crypto.hash(localStore.publicKey.n);
-
-            show();
-        }
-
-        function show() {
-            const $ = document.getElementById.bind(document);
-
-            console.log(`Private Key\n${localStorage.privateKey}`);
-            console.log(`Public Key\n- add this to your shop config! -\n${localStorage.publicKey}`);
-
-            $('private').value = localStorage.privateKey;
-            $('public').value = localStorage.publicKey;
-            $('repo').value = localStorage.repo;
-        }
-
-        if (!localStorage.privateKey || confirm('Seems already setup. Overwrite? Make sure to not lose your private key!'))
-            initialize();
-        else show();
-
-
-
-    </script>
+    <div class="nq-card">
+        <div class="nq-card-header">
+            <h2>Your configuration</h2>
+        </div>
+        <div class="nq-card-body">
+            <ol>
+                <li>for Edit <code>name</code> and <code>address</code></li>
+                <li>Add a <code>logo</code> if you like (if not, remove the line)</li>
+                <li>Set <code>live: true</code> once you tested everything and you're ready for your first customers</li>
+                <li>Don't touch anything below (<code>id</code> and <code>publicKey</code>)</li>
+                <li>
+                    Copy/paste the entire thing into a <code>.js</code> file and add to your HTML like so:
+                    <code>&lt;script type="module" src="my-shop.js"&gt;&lt;/script&gt;</code>
+                </li>
+            </ol>
+            <textarea id="config"></textarea>
+        </div>
+        <div class="nq-card-footer">
+            <button id="new">Create new configuration</button>
+        </div>
+    </div>
+    </section>
 </body>
 
 </html>
