@@ -6,6 +6,8 @@ import {
 } from './types/shop'
 import { Storage } from './storage'
 import HubApi from '@nimiq/hub-api'
+import { WebCrypto } from './storage/encryption/webcrypto'
+import { ShopCrypto } from './types/shop'
 
 export class Shop {
   private configuration: ShopConfiguration
@@ -21,6 +23,8 @@ export class Shop {
       hubUrl || `https://hub.nimiq${live ? '' : '-testnet'}.com`,
     )
   }
+
+  // front-end
 
   async checkout(products: Product[], meta: JSON): Promise<string> {
     const price =
