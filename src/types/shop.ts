@@ -25,8 +25,14 @@ export type ShopConfiguration = {
   name: string
   logo?: string
   id: string
-  publicKey: string
+  publicKey: JsonWebKey
   fee?: number
   live?: boolean
   hubUrl?: string
+}
+
+export type ShopCrypto = {
+  publicKey: JsonWebKey
+  privateKey: JsonWebKey
+  id: string
 }
