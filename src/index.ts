@@ -1,13 +1,16 @@
+// Sören: I don't know what you want to export here and if that's even necessary
 import './polyfills'
-import './components/shop'
-import './components/checkout-button'
-import './shop'
-import { Backend } from './admin/backend'
 
-// Tried for a while to get the re-export working, but only the hack at the bottom worked so far!
-// TODO(svub) The re-export needs to be fixed. @sectore, please have a look if you can.
+// Components
+import { NimiqShop } from './components/shop'
+import { CheckoutButton } from './components/checkout-button'
 
-// export { Backend } from './admin/backend'
-// export default Backend
+// Exports the components under the window.Components namespace
+export const Components = {
+    NimiqShop,
+    CheckoutButton,
+}
 
-window['Backend'] = Backend
+// Libraries
+export { Shop } from './shop'
+export { Backend } from './admin/backend'

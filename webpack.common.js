@@ -10,6 +10,8 @@ const common = {
     path: path.join(__dirname, '/dist/'),
     pathinfo: true,
     filename: 'nimiq-shop.js',
+    // library: 'NimiqShop', // Enable this to export everything not into the window namespace, but under a 'NimiqShop' variable
+    libraryTarget: 'window',
     publicPath: '/',
   },
   module: {
