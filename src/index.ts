@@ -4,11 +4,9 @@ import './components/checkout-button'
 import './shop'
 import { Shop } from './shop'
 
-// Shop.doSomething(Math.random())
-
 export { Shop } from './shop'
-console.log('################')
 export default Shop
 
-// only this one works so far! :(
+// TODO(svub) tried for a while, but only this hack below worked so far!
+//  The re-export needs some fixing. @sectore, please have a look if you can.
 window['Shop'] = Shop
