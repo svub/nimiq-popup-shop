@@ -1,5 +1,5 @@
 import { WebCrypto } from './webcrypto'
-import { Shop } from '../../shop'
+import { Backend } from '../../admin/backend'
 const encoder = new TextEncoder()
 const decoder = new TextDecoder()
 
@@ -9,14 +9,14 @@ describe('crypto', () => {
   it('generating shop crypto', async () => {
     const crypto = new WebCrypto()
 
-    const { privateKey, publicKey, id } = await Shop.generateCrypto()
+    const { privateKey, publicKey, id } = await Backend.generateCrypto()
 
     expect(privateKey.n).toEqual(publicKey.n)
     expect(id).toEqual(await crypto.hash(publicKey.n))
   }),
     it('roundtrip: encrypt/decrypt string', async () => {
       const crypto = new WebCrypto()
-      const { privateKey, publicKey } = await Shop.generateCrypto()
+      const { privateKey, publicKey } = await Backend.generateCrypto()
 
       const data = new Uint8Array(encoder.encode(message))
       const encrypted = await crypto.encrypt(data, publicKey)

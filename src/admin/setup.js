@@ -1,7 +1,10 @@
+// TODO(svub) Fix re-export, see /src/index.ts
+// import Backend from '../nimiq-shop.js'
+
 const $ = document.getElementById.bind(document)
 
 async function initialize() {
-    localStorage.crypto = JSON.stringify(await Shop.generateCrypto())
+    localStorage.crypto = JSON.stringify(await Backend.generateCrypto())
 
     show()
 }
@@ -10,12 +13,13 @@ function show() {
     const $ = document.getElementById.bind(document)
 
     const { privateKey, publicKey, id } = JSON.parse(localStorage.crypto)
+    const config = JSON.stringify(Backend.generateConfiguration(publicKey, id), null, ' ')
 
     console.log(`Private Key\n${JSON.stringify(privateKey)}`)
     console.log(`Public Key\n- add this to your shop config! -\n${JSON.stringify(publicKey)}`)
 
     $('private').value = JSON.stringify(privateKey)
-    $('config').value = `new Shop(${Shop.generateConfiguration(publicKey, id)})`
+    $('config').value = `new Shop(${config})`
 }
 
 function load() {

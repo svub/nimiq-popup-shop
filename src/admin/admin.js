@@ -2,7 +2,7 @@
 // import Shop from '../nimiq-shop.js'
 // import { Shop2 } from '../nimiq-shop.js'
 
-const { privateKey, publicKey } = localStorage
+const { privateKey, publicKey } = localStorage.crypto
 const shop = new Shop(configuration)
 const $ = document.getElementById.bind(document)
 
