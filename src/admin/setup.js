@@ -1,3 +1,6 @@
+// TODO(svub) Fix re-export, see /src/index.ts
+// import Backend from '../nimiq-shop.js'
+
 const $ = document.getElementById.bind(document)
 
 async function initialize() {
