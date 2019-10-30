@@ -3,3 +3,4 @@ node_modules
 dist/
 yarn-error.log
 lint.sh
+nimiq-pop-up-shop-configuration.json
