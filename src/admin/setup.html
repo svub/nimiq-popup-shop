@@ -16,9 +16,27 @@
 <body class="nq-style">
     <div class="nq-card">
         <div class="nq-card-header">
+            <h2>Nimiq Pop-Up Shop Setup</h2>
+        </div>
+        <div class="nq-card-body">
+            <p>
+                <strong>Hello! :)</strong>
+            </p>
+            <p>
+                There are two steps below to set-up your Nimiq Pop-Up Shop.
+            </p>
+        </div>
+    </div>
+
+    <div class="nq-card">
+        <div class="nq-card-header">
             <h2>Your private key</h2>
         </div>
         <div class="nq-card-body">
+            <p>
+                Copy the text from the box below and store it somewhere safe, e.g. in an encrypted ZIP file.
+                If somebody gets this text (your private key), this person has access to your shop and all the orders.
+            </p>
             <p>
                 <strong>Don't share, store safely.</strong>
             </p>
@@ -37,14 +55,14 @@
                 <li>Set <code>live: true</code> once you tested everything and you're ready for your first customers</li>
                 <li>Don't touch anything below (<code>id</code> and <code>publicKey</code>)</li>
                 <li>
-                    Copy/paste the entire thing into a <code>.js</code> file and add to your HTML like so:
-                    <code>&lt;script type="module" src="my-shop.js"&gt;&lt;/script&gt;</code>
+                    Copy/paste the entire thing into a file and named <code>nimiq-popup-shop-configuration.js</code> and put it the root of your shop.
                 </li>
             </ol>
             <textarea id="config"></textarea>
         </div>
         <div class="nq-card-footer">
-            <button id="new">Create new configuration</button>
+            <button id="new">Create new configuration</button> -
+            <a href="./">All done, go to the shop backend</a>
         </div>
     </div>
     </section>
