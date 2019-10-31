@@ -1,8 +1,8 @@
 const path = require('path');
 
 const PATHS = {
-	src: 'src/',
-	dist: 'dist/'
+  src: 'src/',
+  dist: 'dist/',
 }
 
 const common = {
@@ -10,7 +10,9 @@ const common = {
     path: path.join(__dirname, '/dist/'),
     pathinfo: true,
     filename: 'nimiq-shop.js',
-    publicPath: '/'
+    // library: 'NimiqShop', // Enable this to export everything not into the window namespace, but under a 'NimiqShop' variable
+    libraryTarget: 'window',
+    publicPath: '/',
   },
   module: {
     rules: [
@@ -26,12 +28,12 @@ const common = {
     ],
   },
   resolve: {
-    extensions: [ '.tsx', '.ts', '.js' ],
+    extensions: ['.tsx', '.ts', '.js'],
   },
   plugins: [],
 }
 
 module.exports = {
   common,
-  PATHS
-};
+  PATHS,
+}

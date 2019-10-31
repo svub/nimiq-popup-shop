@@ -11,8 +11,8 @@ export interface StorageBackend {
 }
 
 export interface Encryption {
-  encrypt(data: Uint8Array): Promise<Uint8Array>
-  decrypt(data: Uint8Array): Promise<Uint8Array>
+  encrypt(data: Uint8Array, publicKey: JsonWebKey): Promise<Uint8Array>
+  decrypt(data: Uint8Array, privateKey: JsonWebKey): Promise<Uint8Array>
 }
 
 export class Storage {
@@ -30,18 +30,21 @@ export class Storage {
     this.encryption = encryption ? new WebCrypto() : new DummyEncryption()
   }
 
-  async store(order: Order): Promise<string> {
-    return this.backend.store(await this.encryption.encrypt(this.encode(order)))
-  }
-  async load(id: string): Promise<Order> {
-    return this.decode(
-      await this.encryption.decrypt(await this.backend.load(id)),
+  async store(order: Order, publicKey?: JsonWebKey): Promise<string> {
+    return this.backend.store(
+      await this.encryption.encrypt(this.encode(order), publicKey),
     )
   }
-  async list(): Promise<Order[]> {
+  async load(id: string, privateKey?: JsonWebKey): Promise<Order> {
+    return this.decode(
+      await this.encryption.decrypt(await this.backend.load(id), privateKey),
+    )
+  }
+  async list(privateKey?: JsonWebKey): Promise<Order[]> {
     return Promise.all(
       (await this.backend.list()).map(async data =>
-        this.decode(await this.encryption.decrypt(data)),
+        // TODO(svub) Optimization: parse and import pk only once and reuse it. Performance impact unknown.
+        this.decode(await this.encryption.decrypt(data, privateKey)),
       ),
     )
   }

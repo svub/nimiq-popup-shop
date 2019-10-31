@@ -4,8 +4,6 @@ export type Product = {
 }
 
 export type Order = {
-  // TODO(svub) Q: price is part of product >> would consider it redudant info here (?)
-  //price: number
   products: Product[]
   meta?: JSON
   txHash: string // HEX
@@ -22,13 +20,19 @@ export type CheckoutOptions = {
   extraData?: string
 }
 
-export type ShopConfiguartion = {
+export type ShopConfiguration = {
   address: string
   name: string
   logo?: string
   id: string
-  publicKey: string
+  publicKey: JsonWebKey
   fee?: number
   live?: boolean
   hubUrl?: string
+}
+
+export type ShopCrypto = {
+  publicKey: JsonWebKey
+  privateKey: JsonWebKey
+  id: string
 }
