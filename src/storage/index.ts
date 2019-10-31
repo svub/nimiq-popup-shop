@@ -30,17 +30,17 @@ export class Storage {
     this.encryption = encryption ? new WebCrypto() : new DummyEncryption()
   }
 
-  async store(order: Order, publicKey: JsonWebKey = null): Promise<string> {
+  async store(order: Order, publicKey?: JsonWebKey): Promise<string> {
     return this.backend.store(
       await this.encryption.encrypt(this.encode(order), publicKey),
     )
   }
-  async load(id: string, privateKey: JsonWebKey = null): Promise<Order> {
+  async load(id: string, privateKey?: JsonWebKey): Promise<Order> {
     return this.decode(
       await this.encryption.decrypt(await this.backend.load(id), privateKey),
     )
   }
-  async list(privateKey: JsonWebKey = null): Promise<Order[]> {
+  async list(privateKey?: JsonWebKey): Promise<Order[]> {
     return Promise.all(
       (await this.backend.list()).map(async data =>
         // TODO(svub) Optimization: parse and import pk only once and reuse it. Performance impact unknown.
