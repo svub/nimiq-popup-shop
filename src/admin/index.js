@@ -30,7 +30,7 @@ Otherwise, just leave the field empty or hit cancel to set-up the Nimiq Pop-Up S
     return (location.href = 'setup.html')
   }
 
-  backend = new Backend(configuration)
+  backend = new NimiqShop.Backend(configuration)
   loadOpenOrders()
 
   $('update').addEventListener('click', loadOpenOrders)

@@ -11,7 +11,7 @@ function show() {
 
   const { privateKey, publicKey, id } = JSON.parse(localStorage.crypto)
   const config = JSON.stringify(
-    Backend.generateConfiguration(publicKey, id),
+    NimiqShop.Backend.generateConfiguration(publicKey, id),
     null,
     ' ',
   )
@@ -35,7 +35,7 @@ function load() {
   } else {
     show()
   }
-  // TODO 'prettier' code?? The next lines make me question the code formatter...
+  // TODO 'prettier' code?? The next lines make me question the code formatter... can it be improved?
   $('new').addEventListener('click', e => {
     if (
       !localStorage.crypto ||
