@@ -7,15 +7,30 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Muli:400,600,700" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@nimiq/style@v0/nimiq-style.min.css" rel="stylesheet">
+    <link href="common.css" rel="stylesheet">
+    <link href="index.css" rel="stylesheet">
     <script src="../nimiq-shop.js"></script>
-    <script type="module" src="./admin.js"></script>
+    <script src="./index.js"></script>
     <title>Pop-Up Shop Back-end</title>
 </head>
 
 <body class="nq-style">
-    <h2>Open orders</h2>
-    <ul id="open_orders">loading...</ul>
-    <button id="update">Update</button>
+    <div class="nq-card">
+        <div class="nq-card-header">
+            <h2>Open orders</h2>
+        </div>
+        <div class="nq-card-body">
+            <ul id="open_orders">loading...</ul>
+            <p>
+                <button id="update">Refresh orders</button>
+            </p>
+        </div>
+        <div class="nq-card-footer">
+            <p>
+                <a href="setup.html">Go to shop configuration and setup</a>
+            </p>
+        </div>
+    </div>
 </body>
 
 </html>
