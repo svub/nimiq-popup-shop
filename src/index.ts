@@ -13,4 +13,4 @@ export const Components = {
 
 // Libraries
 export { Shop } from './shop'
-export { Backend } from './admin/backend'
+export { Backend } from './backend/backend'

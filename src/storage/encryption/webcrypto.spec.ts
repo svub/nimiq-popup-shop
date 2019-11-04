@@ -1,5 +1,5 @@
 import { WebCrypto } from './webcrypto'
-import { Backend } from '../../admin/backend'
+import { Backend } from '../../backend/backend'
 const encoder = new TextEncoder()
 const decoder = new TextDecoder()
 
