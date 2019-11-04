@@ -1,90 +1,29 @@
 import { Shop } from '../shop'
-import {
-  ShopConfiguration,
-  ShopCrypto,
-  Transaction,
-  OrderProcess,
-} from '../types/shop'
+import { ShopConfiguration, ShopCrypto, Order } from '../types/shop'
 import { WebCrypto } from '../storage/encryption/webcrypto'
-import Nimiq from '@nimiq/core-web'
-import { OrderProcess, OrderProcessState } from '../types/shop'
+import Nimiq, { Client } from '@nimiq/core-web'
 
-const decoder = new TextDecoder()
+const decoder: TextDecoder = new TextDecoder()
 
 export class Backend extends Shop {
-  private nimiq = new Promise<Nimiq.Client>(resolve =>
-    this.loadNimiq().then(resolve),
-  )
-
-  // TODO(svub) import and export order and TX history
-
-  async sync(privateKey: JsonWebKey): Promise<void> {
-    const newTx = await this.getLatestTransactions()
-
-    const newOrders: OrderProcess[] = await Promise.all(
-      newTx
-        .filter(tx => tx.data && tx.data.raw.length > 0)
-        .map(async tx => {
-          // example: QmbThHLUV4gfw2DHubf7xA1oumv8N7TphtpEJeonBjR4jY
-          const orderId = decoder.decode(tx.data.raw)
-          try {
-            const order = await this.storage.load(orderId, privateKey)
-            return {
-              order,
-              txHash: tx.transactionHash.toHex(),
-              state:
-                this.sum(order.products) > tx.value
-                  ? OrderProcessState.underFunded
-                  : OrderProcessState.paid,
-            }
-          } catch (e) {
-            console.warn(
-              `No order found for ${orderId} from tx ${tx.transactionHash.toHex()}`,
-            )
-          }
-        }),
-    )
-
-    this.addOrders(newOrders.filter(order => !!order))
+  async list(privateKey: JsonWebKey): Promise<Order[]> {
+    return this.storage.list(privateKey)
   }
 
-  async getLatestTransactions(): Promise<Nimiq.Client.TransactionDetails[]> {
-    const nimiq = await this.nimiq
-    const lastTx: Nimiq.Client.TransactionDetails = JSON.parse(
-      localStorage.lastTx || 0,
-    ) || { transactionHash: undefined }
-    const newTx: Nimiq.Client.TransactionDetails[] = await nimiq.getTransactionsByAddress(
-      this.configuration.address,
-    )
-
-    newTx
-      .sort((a, b) => a.timestamp - b.timestamp)
-      .slice(
-        newTx.findIndex(tx => tx.transactionHash == lastTx.transactionHash),
-      )
-    // eslint-disable-next-line
-    localStorage.lastTx = JSON.stringify(newTx[newTx.length - 1])
-
-    return newTx
-  }
-
-  private async loadNimiq(): Promise<Nimiq.Client> {
-    // @ts-ignore parameter exists but missing in type definition, PR submitted
-    await Nimiq.load(location.origin + '/backend/wasm/')
-    this.configuration.live
-      ? Nimiq.GenesisConfig.main()
-      : Nimiq.GenesisConfig.test()
+  async bs(privateKey: JsonWebKey): Promise<void> {
+    if (this.configuration.live) Nimiq.GenesisConfig.main()
+    else {
+      Nimiq.GenesisConfig.test()
+    }
     const nimiq = Nimiq.Client.Configuration.builder().instantiateClient()
-    await nimiq.waitForConsensusEstablished()
-    return nimiq
-  }
-
-  list(): OrderProcess[] {
-    return JSON.parse(localStorage.orders || '[]')
-  }
-
-  private addOrders(orders: OrderProcess[]): void {
-    localStorage.orders = JSON.stringify([...this.list(), ...orders])
+    nimiq.addTransactionListener(
+      async (transaction: Client.TransactionDetails) => {
+        const orderId = decoder.decode(transaction.data.raw)
+        const order = await super.storage.load(orderId, privateKey)
+        const correct = order.products.map(product => product.price).
+      },
+      [this.configuration.address],
+    )
   }
 
   static async generateCrypto(): Promise<ShopCrypto> {
@@ -112,5 +51,6 @@ export class Backend extends Shop {
       id,
       publicKey,
     }
+    return
   }
 }
