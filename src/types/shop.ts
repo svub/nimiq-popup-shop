@@ -10,7 +10,7 @@ export type Order = {
 }
 
 export enum OrderProcessState {
-  new,
+  paid,
   done,
   underFunded,
 }
