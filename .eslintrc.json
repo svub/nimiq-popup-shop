@@ -8,6 +8,9 @@
     "plugin:prettier/recommended",
     "prettier/@typescript-eslint"
   ],
+  "env": {
+    "browser": true
+  },
   "rules": {
     "no-var": "error",
     "@typescript-eslint/camelcase": "off",

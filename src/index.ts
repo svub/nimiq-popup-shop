@@ -7,8 +7,8 @@ import { CheckoutButton } from './components/checkout-button'
 
 // Exports the components under the window.Components namespace
 export const Components = {
-    NimiqShop,
-    CheckoutButton,
+  NimiqShop,
+  CheckoutButton,
 }
 
 // Libraries
