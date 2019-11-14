@@ -1,5 +1,10 @@
 import { Shop } from '../shop'
-import { ShopConfiguration, ShopCrypto, Transaction } from '../types/shop'
+import {
+  ShopConfiguration,
+  ShopCrypto,
+  Transaction,
+  OrderProcess,
+} from '../types/shop'
 import { WebCrypto } from '../storage/encryption/webcrypto'
 import Nimiq from '@nimiq/core-web'
 import { OrderProcess, OrderProcessState } from '../types/shop'
@@ -27,7 +32,10 @@ export class Backend extends Shop {
             return {
               order,
               txHash: tx.transactionHash.toHex(),
-              state: OrderProcessState.new,
+              state:
+                this.sum(order.products) > tx.value
+                  ? OrderProcessState.underFunded
+                  : OrderProcessState.paid,
             }
           } catch (e) {
             console.warn(
