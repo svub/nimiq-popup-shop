@@ -7,9 +7,9 @@ import { OrderProcess, OrderProcessState } from '../types/shop'
 const decoder = new TextDecoder()
 
 export class Backend extends Shop {
-  list(): OrderProcess[] {
-    return this.allOrders()
-  }
+  private nimiq = new Promise<Nimiq.Client>(resolve =>
+    this.loadNimiq().then(resolve),
+  )
 
   // TODO(svub) import and export order and TX history
 
@@ -41,7 +41,7 @@ export class Backend extends Shop {
   }
 
   async getLatestTransactions(): Promise<Nimiq.Client.TransactionDetails[]> {
-    const nimiq = await this.loadNimiq()
+    const nimiq = await this.nimiq
     const lastTx: Nimiq.Client.TransactionDetails = JSON.parse(
       localStorage.lastTx || 0,
     ) || { transactionHash: undefined }
@@ -60,50 +60,24 @@ export class Backend extends Shop {
     return newTx
   }
 
-  private nimiq: Nimiq.Client
   private async loadNimiq(): Promise<Nimiq.Client> {
-    if (!this.nimiq) {
-      // @ts-ignore parameter exists but missing in type definition, PR submitted
-      await Nimiq.load(location.origin + '/backend/wasm/')
-      this.configuration.live
-        ? Nimiq.GenesisConfig.main()
-        : Nimiq.GenesisConfig.test()
-      this.nimiq = Nimiq.Client.Configuration.builder().instantiateClient()
-      await this.nimiq.waitForConsensusEstablished()
-    }
-    return this.nimiq
+    // @ts-ignore parameter exists but missing in type definition, PR submitted
+    await Nimiq.load(location.origin + '/backend/wasm/')
+    this.configuration.live
+      ? Nimiq.GenesisConfig.main()
+      : Nimiq.GenesisConfig.test()
+    const nimiq = Nimiq.Client.Configuration.builder().instantiateClient()
+    await nimiq.waitForConsensusEstablished()
+    return nimiq
   }
 
-  private cacheTransaction(tx: Transaction): void {
-    localStorage.setItem(`tx-${tx.hash}`, JSON.stringify(tx))
-  }
-
-  private loadTransaction(txHash: string): Transaction {
-    return JSON.parse(localStorage.getItem(`tx-${txHash}`))
-  }
-
-  allOrders(): OrderProcess[] {
+  list(): OrderProcess[] {
     return JSON.parse(localStorage.orders || '[]')
   }
 
   private addOrders(orders: OrderProcess[]): void {
-    localStorage.orders = JSON.stringify([...this.allOrders(), ...orders])
+    localStorage.orders = JSON.stringify([...this.list(), ...orders])
   }
-
-  //   if (this.configuration.live) Nimiq.GenesisConfig.main()
-  //   else {
-  //     Nimiq.GenesisConfig.test()
-  //   }
-  //   const nimiq = Nimiq.Client.Configuration.builder().instantiateClient()
-  //   nimiq.addTransactionListener(
-  //     async (transaction: Client.TransactionDetails) => {
-  //       const orderId = decoder.decode(transaction.data.raw)
-  //       const order = await super.storage.load(orderId, privateKey)
-  //       const correct = order.products.map(product => product.price).
-  //     },
-  //     [this.configuration.address],
-  //   )
-  // }
 
   static async generateCrypto(): Promise<ShopCrypto> {
     const crypto = new WebCrypto()
