@@ -1,10 +1,5 @@
 import { Shop } from '../shop'
-import {
-  ShopConfiguration,
-  ShopCrypto,
-  Order,
-  Transaction,
-} from '../types/shop'
+import { ShopConfiguration, ShopCrypto, Transaction } from '../types/shop'
 import { WebCrypto } from '../storage/encryption/webcrypto'
 import Nimiq from '@nimiq/core-web'
 import { OrderProcess, OrderProcessState } from '../types/shop'
@@ -39,7 +34,7 @@ export class Backend extends Shop {
               `No order found for ${orderId} from tx ${tx.transactionHash.toHex()}`,
             )
           }
-        })
+        }),
     )
 
     this.addOrders(newOrders.filter(order => !!order))
