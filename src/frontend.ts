@@ -7,6 +7,8 @@ import {
 } from './types/shop'
 import HubApi from '@nimiq/hub-api'
 
+const encoder = new TextEncoder()
+
 export class Frontend extends Shop {
   private hubApi: HubApi
 
@@ -22,33 +24,32 @@ export class Frontend extends Shop {
   async checkout(products: Product[], meta: JSON): Promise<string> {
     const price = super.sum(products)
 
-    const signedTx = await this.pay(price)
-    const orderId = await this.order(products, meta, signedTx)
+    const orderId = await this.order(products, meta)
+    const signedTx = await this.pay(orderId, price)
 
     return orderId
   }
 
-  private async pay(price: number): Promise<HubApi.SignedTransaction> {
+  private async pay(
+    orderId: string,
+    price: number,
+  ): Promise<HubApi.SignedTransaction> {
     const { name, address, fee, logo } = this.configuration
     const options: CheckoutOptions = {
       appName: name,
       recipient: address,
       value: price,
+      extraData: encoder.encode(orderId),
       fee,
       shopLogoUrl: logo,
     }
     return await this.hubApi.checkout(options)
   }
 
-  private async order(
-    products: Product[],
-    meta: JSON,
-    signedTx: HubApi.SignedTransaction,
-  ): Promise<string> {
+  private async order(products: Product[], meta: JSON): Promise<string> {
     const order: Order = {
       products,
       meta,
-      txHash: signedTx.hash,
       timestamp: new Date().getTime(),
     }
 
