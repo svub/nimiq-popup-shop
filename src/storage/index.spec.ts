@@ -5,7 +5,6 @@ const order: Order = {
   meta: null,
   products: [],
   timestamp: new Date().getMilliseconds(),
-  txHash: 'TX hash',
 }
 
 describe('storage', () => {
