@@ -38,8 +38,13 @@ export type ShopConfiguration = {
   id: string
   publicKey: JsonWebKey
   fee?: number
-  live?: boolean
   hubUrl?: string
+  live?: boolean
+  force?: { // force feature when not "live" (for testing mostly)
+    ipfs?: boolean
+    mainnet?: boolean
+    encryption?: boolean
+  }
 }
 
 export type ShopCrypto = {

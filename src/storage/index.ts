@@ -21,10 +21,10 @@ export class Storage {
 
   constructor(
     repository: string,
-    production: boolean = process.env.production == 'true',
-    encryption: boolean = production,
+    online: boolean = process.env.production == 'true',
+    encryption: boolean = online,
   ) {
-    this.backend = production
+    this.backend = online
       ? new IpfsStorage(repository)
       : new DummyStorage(repository)
     this.encryption = encryption ? new WebCrypto() : new DummyEncryption()

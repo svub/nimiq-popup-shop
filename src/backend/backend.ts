@@ -70,7 +70,7 @@ export class Backend extends Shop {
   private async loadNimiq(): Promise<Nimiq.Client> {
     // @ts-ignore parameter exists but missing in type definition, PR submitted
     await Nimiq.load(location.origin + '/backend/wasm/')
-    this.configuration.live
+    this.configuration.live || this.configuration.force.mainnet
       ? Nimiq.GenesisConfig.main()
       : Nimiq.GenesisConfig.test()
     const nimiq = Nimiq.Client.Configuration.builder().instantiateClient()
