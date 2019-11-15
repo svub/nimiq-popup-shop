@@ -1,15 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://fonts.googleapis.com/css?family=Muli:400,600,700" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@nimiq/style@v0/nimiq-style.min.css" rel="stylesheet">
-    <title>Nimiq Pop-Up Shop</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link href="https://fonts.googleapis.com/css?family=Muli:400,600,700" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/@nimiq/style@v0/nimiq-style.min.css" rel="stylesheet">
+  <title>Nimiq Pop-Up Shop</title>
+  <script>
+    $ = document.querySelector.bind(document)
+    async function getMetadata(products, sum) {
+      return new Promise(resolve => {
+        const dialog = $('#metadata')
+        $('#products').textContent = JSON.stringify(products)
+        $('#sum').textContent = sum + ' NIM'
+        dialog.showModal()
+        dialog.addEventListener('close', function onClose() {
+          console.log(dialog.returnValue)
+          if (dialog.returnValue) {
+            const metadata = $('#email').value
+            resolve(metadata)
+          }
+          else resolve(false)
+        });
+      })
+    }
+  </script>
 </head>
+
 <body class="nq-style">
-  <nimiq-shop>
+  <nimiq-shop address="NQ37 CH7U 9DXX 6GV0 UK0N SJTV 4Q1A FGN9 M6BE" collectMetadata="getMetadata">
     <h1 class="nq-h1">Nimiq Pop-Up Shop</h1>
     <!-- product A-->
     <div class="nq-card">
@@ -20,12 +41,7 @@
         <p>Description of Product A.</p>
       </div>
       <div class="nq-card-footer">
-          <nimiq-shop-checkout-button
-            name="Product A"
-            price="110000"
-            label="Buy"
-            buttonColor="gold"
-          >
+        <nimiq-shop-checkout-button name="Product A" price="100" label="Buy" buttonColor="gold">
         </nimiq-shop-checkout-button>
       </div>
     </div>
@@ -35,32 +51,33 @@
         <h1 class="nq-h1">Product B</h1>
       </div>
       <div class="nq-card-body">
-          <p>Description of Product B.</p>
-          <p>Small button + inverse + red</p>
-        </div>
-        <div class="nq-card-footer">
-          <nimiq-shop-checkout-button
-            name="Product B"
-            price="12000"
-            inverse
-            buttonColor="red"
-          >
-          </nimiq-shop-checkout-button>
-        </div>
+        <p>Description of Product B.</p>
+        <p>Small button + inverse + red</p>
       </div>
+      <div class="nq-card-footer">
+        <nimiq-shop-checkout-button name="Product B" price="12" inverse buttonColor="red">
+        </nimiq-shop-checkout-button>
+      </div>
+    </div>
 
-      <div class="nq-card">
-          <nimiq-shop-checkout-button
-            label="Small checkout button, disabled"
-            disable
-            small>
-          </nimiq-shop-checkout-button>
-          <nimiq-shop-checkout-button
-            label="Pill, red checkout button"
-            buttonColor="red"
-            pill>
-          </nimiq-shop-checkout-button>
-        </div>
-    </nimiq-shop>
-  </body>
+    <div class="nq-card">
+      <nimiq-shop-checkout-button label="Small checkout button, disabled" disable small>
+      </nimiq-shop-checkout-button>
+      <nimiq-shop-checkout-button label="Pill, red checkout button" buttonColor="red" pill>
+      </nimiq-shop-checkout-button>
+    </div>
+    <dialog id="metadata">
+      Hey!
+      <pre id="products"></pre>
+      <p id="sum"></p>
+      <form method="dialog">
+        <p>
+          <label for="email">Pleae enter your email to send you your products.</label>
+          <input type="text" name="email" id="email"></p>
+        <p><input type="submit" value="Submit order"></p>
+      </form>
+    </dialog>
+  </nimiq-shop>
+</body>
+
 </html>
