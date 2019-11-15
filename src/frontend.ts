@@ -22,10 +22,10 @@ export class Frontend extends Shop {
   }
 
   async checkout(products: Product[], meta: JSON): Promise<string> {
-    const price = super.sum(products)
+    const price = super.sumUp(products)
 
     const orderId = await this.order(products, meta)
-    const signedTx = await this.pay(orderId, price)
+    await this.pay(orderId, price)
 
     return orderId
   }
@@ -38,7 +38,7 @@ export class Frontend extends Shop {
     const options: CheckoutOptions = {
       appName: name,
       recipient: address,
-      value: price,
+      value: price * 1e5,
       extraData: encoder.encode(orderId),
       fee,
       shopLogoUrl: logo,

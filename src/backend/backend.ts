@@ -2,12 +2,11 @@ import { Shop } from '../shop'
 import {
   ShopConfiguration,
   ShopCrypto,
-  Transaction,
   OrderProcess,
+  OrderProcessState,
 } from '../types/shop'
 import { WebCrypto } from '../storage/encryption/webcrypto'
 import Nimiq from '@nimiq/core-web'
-import { OrderProcess, OrderProcessState } from '../types/shop'
 
 const decoder = new TextDecoder()
 
@@ -33,7 +32,7 @@ export class Backend extends Shop {
               order,
               txHash: tx.transactionHash.toHex(),
               state:
-                this.sum(order.products) > tx.value
+                this.sumUp(order.products) * 1e5 > tx.value
                   ? OrderProcessState.underFunded
                   : OrderProcessState.paid,
             }
