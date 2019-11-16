@@ -1,7 +1,7 @@
 const $ = document.getElementById.bind(document)
 
 async function initialize() {
-  localStorage.crypto = JSON.stringify(await Backend.generateCrypto())
+  localStorage.crypto = JSON.stringify(await NimiqShop.Backend.generateCrypto())
 
   show()
 }
@@ -24,7 +24,7 @@ function show() {
   )
 
   $('private').value = JSON.stringify(privateKey)
-  $('config').value = `new Shop(${config})`
+  $('config').value = config
 }
 
 function load() {
@@ -36,7 +36,7 @@ function load() {
     show()
   }
   // TODO 'prettier' code?? The next lines make me question the code formatter... can it be improved?
-  $('new').addEventListener('click', e => {
+  $('new').addEventListener('click', () => {
     if (
       !localStorage.crypto ||
       confirm(

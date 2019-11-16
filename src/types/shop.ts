@@ -40,7 +40,8 @@ export type ShopConfiguration = {
   fee?: number
   hubUrl?: string
   live?: boolean
-  force?: { // force feature when not "live" (for testing mostly)
+  force?: {
+    // force feature when not "live" (for testing mostly)
     ipfs?: boolean
     mainnet?: boolean
     encryption?: boolean
