@@ -14,10 +14,17 @@ export class Backend extends Shop {
   private nimiq = new Promise<Nimiq.Client>(resolve =>
     this.loadNimiq().then(resolve),
   )
+  private privateKey: JsonWebKey
 
   // TODO(svub) import and export order and TX history
 
-  async sync(privateKey: JsonWebKey): Promise<void> {
+  constructor(configuration: ShopConfiguration, privateKey: JsonWebKey) {
+    super(configuration)
+    this.privateKey =
+      typeof privateKey == 'string' ? JSON.parse(privateKey) : privateKey
+  }
+
+  async sync(): Promise<void> {
     const newTx = await this.getLatestTransactions()
 
     const newOrders: OrderProcess[] = await Promise.all(
@@ -27,7 +34,7 @@ export class Backend extends Shop {
           // example: QmbThHLUV4gfw2DHubf7xA1oumv8N7TphtpEJeonBjR4jY
           const orderId = decoder.decode(tx.data.raw)
           try {
-            const order = await this.storage.load(orderId, privateKey)
+            const order = await this.storage.load(orderId, this.privateKey)
             return {
               order,
               txHash: tx.transactionHash.toHex(),
@@ -37,9 +44,22 @@ export class Backend extends Shop {
                   : OrderProcessState.paid,
             }
           } catch (e) {
-            console.warn(
-              `No order found for ${orderId} from tx ${tx.transactionHash.toHex()}`,
-            )
+            if (e.message == 'Non-base58 character') {
+              console.warn(
+                `Invalid order ID ${orderId} in TX ${tx.transactionHash.toHex()}`,
+              )
+            } else {
+              if (e.code == 0 && e.name == 'OperationError') {
+                console.warn(
+                  `Failed decrypting order ${orderId} for TX ${tx.transactionHash.toHex()}`,
+                )
+              } else {
+                console.warn(
+                  `No order found for ${orderId} from TX ${tx.transactionHash.toHex()}`,
+                )
+                console.log(e)
+              }
+            }
           }
         }),
     )

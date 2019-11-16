@@ -29,14 +29,14 @@ Otherwise, just leave the field empty or hit cancel to set-up the Nimiq Pop-Up S
     return (location.href = 'setup.html')
   }
 
-  backend = new NimiqShop.Backend(configuration)
+  backend = new NimiqShop.Backend(configuration, privateKey)
   loadOpenOrders()
 
   $('update').addEventListener('click', loadOpenOrders)
 }
 
 async function loadOpenOrders() {
-  await backend.sync(privateKey)
+  await backend.sync()
   const orders = backend.list()
   const list = $('open_orders')
   list.innerHTML = ''
