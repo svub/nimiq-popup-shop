@@ -25,11 +25,16 @@ export class Backend extends Shop {
   }
 
   async sync(): Promise<void> {
+    // const knownTx = this.list().map(process => process.txHash)
     const newTx = await this.getLatestTransactions()
 
     const newOrders: OrderProcess[] = await Promise.all(
       newTx
-        .filter(tx => tx.data && tx.data.raw.length > 0)
+        .filter(
+          tx =>
+            // !knownTx.includes(tx.transactionHash.toHex()) &&
+            tx.data && tx.data.raw.length > 0,
+        )
         .map(async tx => {
           // example: QmbThHLUV4gfw2DHubf7xA1oumv8N7TphtpEJeonBjR4jY
           const orderId = decoder.decode(tx.data.raw)
@@ -69,20 +74,17 @@ export class Backend extends Shop {
 
   async getLatestTransactions(): Promise<Nimiq.Client.TransactionDetails[]> {
     const nimiq = await this.nimiq
-    const lastTx: Nimiq.Client.TransactionDetails = JSON.parse(
-      localStorage.lastTx || 0,
-    ) || { transactionHash: undefined }
-    const newTx: Nimiq.Client.TransactionDetails[] = await nimiq.getTransactionsByAddress(
+    const lastTx: string = localStorage.lastTx
+    const latestTx: Nimiq.Client.TransactionDetails[] = await nimiq.getTransactionsByAddress(
       this.configuration.address,
     )
 
-    newTx
-      .sort((a, b) => a.timestamp - b.timestamp)
-      .slice(
-        newTx.findIndex(tx => tx.transactionHash == lastTx.transactionHash),
-      )
+    const newTx = latestTx
+      .sort((a, b) => a.timestamp - b.timestamp) // old .. new
+      .slice(latestTx.findIndex(tx => tx.transactionHash.toHex() == lastTx) + 1)
     // eslint-disable-next-line
-    localStorage.lastTx = JSON.stringify(newTx[newTx.length - 1])
+    if (newTx.length > 0)
+      localStorage.lastTx = newTx[newTx.length - 1].transactionHash.toHex()
 
     return newTx
   }
@@ -100,6 +102,10 @@ export class Backend extends Shop {
 
   list(): OrderProcess[] {
     return JSON.parse(localStorage.orders || '[]')
+  }
+
+  clearCache(): void {
+    localStorage.orders = []
   }
 
   private addOrders(orders: OrderProcess[]): void {
