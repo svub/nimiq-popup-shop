@@ -20,7 +20,6 @@ export class IpfsStorage implements StorageBackend {
     console.log(`IPFS online ${this.ipfs.isOnline()}`)
     // @ts-ignore seems types are not up-to-date with the JS
     const buffer: Buffer = await this.ipfs.cat(id)
-    console.log(buffer.toString('utf8'))
     return new Uint8Array(buffer)
   }
 

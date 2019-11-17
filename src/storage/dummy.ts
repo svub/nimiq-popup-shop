@@ -21,14 +21,6 @@ export class DummyStorage implements StorageBackend {
   }
 
   async load(id: string): Promise<Uint8Array> {
-    // return new Promise((resolve, reject) => {
-    //   const data: string = localStorage.getItem(this._id(id))
-    //   if (data != null) {
-    //     resolve(this.decode(data))
-    //   } else {
-    //     reject(`Order with id ${id} not found in storage`)
-    //   }
-    // });
     const data: string = localStorage.getItem(this._id(id))
     if (data == null) {
       throw new Error(`Order with id ${id} not found in storage`)
