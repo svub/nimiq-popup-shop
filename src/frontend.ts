@@ -4,6 +4,7 @@ import {
   Product,
   Order,
   CheckoutOptions,
+  OrderReceipt,
 } from './types/shop'
 import HubApi from '@nimiq/hub-api'
 
@@ -21,13 +22,13 @@ export class Frontend extends Shop {
     )
   }
 
-  async checkout(products: Product[], meta: JSON): Promise<string> {
-    const price = super.sumUp(products)
+  async checkout(products: Product[], meta: JSON): Promise<OrderReceipt> {
+    const sum = super.sumUp(products)
 
     const orderId = await this.order(products, meta)
-    await this.pay(orderId, price)
+    const txHash = await this.pay(orderId, sum)
 
-    return orderId
+    return { products, sum, orderId, txHash }
   }
 
   private async pay(
