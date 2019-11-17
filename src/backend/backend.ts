@@ -79,6 +79,12 @@ export class Backend extends Shop {
       this.configuration.address,
     )
 
+    const x = latestTx.sort((a, b) => a.timestamp - b.timestamp)
+    console.log(x)
+    const i = x.findIndex(tx => tx.transactionHash.toHex() == lastTx)
+    console.log(i)
+    console.log(x.slice(0, Math.max(i, 0)))
+
     const newTx = latestTx
       .sort((a, b) => a.timestamp - b.timestamp) // old .. new
       .slice(latestTx.findIndex(tx => tx.transactionHash.toHex() == lastTx) + 1)

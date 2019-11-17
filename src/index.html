@@ -7,6 +7,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link href="https://fonts.googleapis.com/css?family=Muli:400,600,700" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/@nimiq/style/nimiq-style.min.css" rel="stylesheet">
+  <link href="common.css" rel="stylesheet">
   <title>Nimiq Pop-Up Shop</title>
   <script>
     $ = document.querySelector.bind(document)
@@ -17,7 +18,6 @@
         $('#metadata .sum').textContent = sum + ' NIM'
         dialog.showModal()
         dialog.addEventListener('close', function onClose() {
-          console.log(dialog.returnValue)
           if (dialog.returnValue) {
             const metadata = $('#email').value
             resolve(metadata)
@@ -44,7 +44,10 @@
 
 <body class="nq-style">
   <nimiq-shop collectMetadata="getMetadata" onError="checkoutError" onSuccess="checkoutSuccess">
+
     <h1 class="nq-h1">Nimiq Pop-Up Shop</h1>
+
+
     <!-- product A-->
     <div class="nq-card">
       <div class="nq-card-header">
@@ -58,6 +61,8 @@
         </nimiq-shop-checkout-button>
       </div>
     </div>
+
+
     <!-- product B -->
     <div class="nq-card">
       <div class="nq-card-header">
@@ -73,12 +78,15 @@
       </div>
     </div>
 
+
     <div class="nq-card">
       <nimiq-shop-checkout-button label="Small checkout button, disabled" disable small>
       </nimiq-shop-checkout-button>
       <nimiq-shop-checkout-button label="Pill, red checkout button" buttonColor="red" pill>
       </nimiq-shop-checkout-button>
     </div>
+
+
     <dialog id="metadata">
       Hey!
       <pre class="products"></pre>
@@ -90,6 +98,8 @@
         <p><input type="submit" value="Submit order"></p>
       </form>
     </dialog>
+
+
     <dialog id="success">
       Hey! Well done!
       <p>What you bought:</p>
@@ -103,6 +113,7 @@
         <li>Transaction hash: <span class="tx-hash"></span></li>
       </ul>
     </dialog>
+
   </nimiq-shop>
 </body>
 
