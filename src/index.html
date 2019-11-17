@@ -13,8 +13,8 @@
     async function getMetadata(products, sum) {
       return new Promise(resolve => {
         const dialog = $('#metadata')
-        $('#products').textContent = JSON.stringify(products)
-        $('#sum').textContent = sum + ' NIM'
+        $('#metadata .products').textContent = JSON.stringify(products)
+        $('#metadata .sum').textContent = sum + ' NIM'
         dialog.showModal()
         dialog.addEventListener('close', function onClose() {
           console.log(dialog.returnValue)
@@ -26,11 +26,24 @@
         });
       })
     }
+
+    function checkoutError(error) {
+
+    }
+
+    function checkoutSuccess(receipt) {
+      const { products, sum, orderId, txHash } = receipt
+      const dialog = $('#success')
+      $('#success .products').textContent = JSON.stringify(products)
+      $('#success .sum').textContent = sum + ' NIM'
+      $('#success .order-id').textContent = orderId
+      $('#success .tx-hash').innerHTLM = '<a href="https://test.nimiq.watch/#' + txHash + '">' + txHash + '</a>'
+    }
   </script>
 </head>
 
 <body class="nq-style">
-  <nimiq-shop address="NQ37 CH7U 9DXX 6GV0 UK0N SJTV 4Q1A FGN9 M6BE" collectMetadata="getMetadata">
+  <nimiq-shop collectMetadata="getMetadata" onError="checkoutError" onSuccess="checkoutSuccess">
     <h1 class="nq-h1">Nimiq Pop-Up Shop</h1>
     <!-- product A-->
     <div class="nq-card">
@@ -68,14 +81,27 @@
     </div>
     <dialog id="metadata">
       Hey!
-      <pre id="products"></pre>
-      <p id="sum"></p>
+      <pre class="products"></pre>
+      <p class="sum"></p>
       <form method="dialog">
         <p>
           <label for="email">Pleae enter your email to send you your products.</label>
           <input type="text" name="email" id="email"></p>
         <p><input type="submit" value="Submit order"></p>
       </form>
+    </dialog>
+    <dialog id="success">
+      Hey! Well done!
+      <p>What you bought:</p>
+      <pre class="products"></pre>
+      <p>Total: <span class="sum"></span></p>
+      <p>
+        Your order details:
+      </p>
+      <ul>
+        <li>Order ID: <span class="order-id"></span></li>
+        <li>Transaction hash: <span class="tx-hash"></span></li>
+      </ul>
     </dialog>
   </nimiq-shop>
 </body>
