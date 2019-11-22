@@ -14,20 +14,32 @@ export class Backend extends Shop {
   private nimiq = new Promise<Nimiq.Client>(resolve =>
     this.loadNimiq().then(resolve),
   )
+  private privateKey: JsonWebKey
 
   // TODO(svub) import and export order and TX history
 
-  async sync(privateKey: JsonWebKey): Promise<void> {
+  constructor(configuration: ShopConfiguration, privateKey: JsonWebKey) {
+    super(configuration)
+    this.privateKey =
+      typeof privateKey == 'string' ? JSON.parse(privateKey) : privateKey
+  }
+
+  async sync(): Promise<void> {
+    // const knownTx = this.list().map(process => process.txHash)
     const newTx = await this.getLatestTransactions()
 
     const newOrders: OrderProcess[] = await Promise.all(
       newTx
-        .filter(tx => tx.data && tx.data.raw.length > 0)
+        .filter(
+          tx =>
+            // !knownTx.includes(tx.transactionHash.toHex()) &&
+            tx.data && tx.data.raw.length > 0,
+        )
         .map(async tx => {
           // example: QmbThHLUV4gfw2DHubf7xA1oumv8N7TphtpEJeonBjR4jY
           const orderId = decoder.decode(tx.data.raw)
           try {
-            const order = await this.storage.load(orderId, privateKey)
+            const order = await this.storage.load(orderId, this.privateKey)
             return {
               order,
               txHash: tx.transactionHash.toHex(),
@@ -37,9 +49,22 @@ export class Backend extends Shop {
                   : OrderProcessState.paid,
             }
           } catch (e) {
-            console.warn(
-              `No order found for ${orderId} from tx ${tx.transactionHash.toHex()}`,
-            )
+            if (e.message == 'Non-base58 character') {
+              console.warn(
+                `Invalid order ID ${orderId} in TX ${tx.transactionHash.toHex()}`,
+              )
+            } else {
+              if (e.code == 0 && e.name == 'OperationError') {
+                console.warn(
+                  `Failed decrypting order ${orderId} for TX ${tx.transactionHash.toHex()}`,
+                )
+              } else {
+                console.warn(
+                  `No order found for ${orderId} from TX ${tx.transactionHash.toHex()}`,
+                )
+                console.log(e)
+              }
+            }
           }
         }),
     )
@@ -49,20 +74,23 @@ export class Backend extends Shop {
 
   async getLatestTransactions(): Promise<Nimiq.Client.TransactionDetails[]> {
     const nimiq = await this.nimiq
-    const lastTx: Nimiq.Client.TransactionDetails = JSON.parse(
-      localStorage.lastTx || 0,
-    ) || { transactionHash: undefined }
-    const newTx: Nimiq.Client.TransactionDetails[] = await nimiq.getTransactionsByAddress(
+    const lastTx: string = localStorage.lastTx
+    const latestTx: Nimiq.Client.TransactionDetails[] = await nimiq.getTransactionsByAddress(
       this.configuration.address,
     )
 
-    newTx
-      .sort((a, b) => a.timestamp - b.timestamp)
-      .slice(
-        newTx.findIndex(tx => tx.transactionHash == lastTx.transactionHash),
-      )
+    const x = latestTx.sort((a, b) => a.timestamp - b.timestamp)
+    console.log(x)
+    const i = x.findIndex(tx => tx.transactionHash.toHex() == lastTx)
+    console.log(i)
+    console.log(x.slice(0, Math.max(i, 0)))
+
+    const newTx = latestTx
+      .sort((a, b) => a.timestamp - b.timestamp) // old .. new
+      .slice(latestTx.findIndex(tx => tx.transactionHash.toHex() == lastTx) + 1)
     // eslint-disable-next-line
-    localStorage.lastTx = JSON.stringify(newTx[newTx.length - 1])
+    if (newTx.length > 0)
+      localStorage.lastTx = newTx[newTx.length - 1].transactionHash.toHex()
 
     return newTx
   }
@@ -70,7 +98,7 @@ export class Backend extends Shop {
   private async loadNimiq(): Promise<Nimiq.Client> {
     // @ts-ignore parameter exists but missing in type definition, PR submitted
     await Nimiq.load(location.origin + '/backend/wasm/')
-    this.configuration.live
+    this.configuration.live || this.configuration.force.mainnet
       ? Nimiq.GenesisConfig.main()
       : Nimiq.GenesisConfig.test()
     const nimiq = Nimiq.Client.Configuration.builder().instantiateClient()
@@ -80,6 +108,10 @@ export class Backend extends Shop {
 
   list(): OrderProcess[] {
     return JSON.parse(localStorage.orders || '[]')
+  }
+
+  clearCache(): void {
+    localStorage.orders = []
   }
 
   private addOrders(orders: OrderProcess[]): void {

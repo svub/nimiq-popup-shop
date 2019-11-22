@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Muli:400,600,700" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@nimiq/style@v0/nimiq-style.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@nimiq/style/nimiq-style.min.css" rel="stylesheet">
     <link href="common.css" rel="stylesheet">
     <link href="index.css" rel="stylesheet">
     <script src="../nimiq-shop.js"></script>
@@ -22,12 +22,13 @@
         <div class="nq-card-body">
             <ul id="open_orders">loading...</ul>
             <p>
-                <button id="update">Refresh orders</button>
+                <button class="nq-button" id="update">Refresh orders</button>
             </p>
         </div>
         <div class="nq-card-footer">
             <p>
-                <a href="setup.html">Go to shop configuration and setup</a>
+                <button class="nq-button-s" id="change-key">Change private key and reset shop</button>
+                <a class="nq-button-s" href="setup.html">Go to shop setup</a>
             </p>
         </div>
     </div>

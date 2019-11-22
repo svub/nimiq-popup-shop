@@ -7,7 +7,7 @@ import {
 } from 'lit-element'
 import { TAG_NAME as BUTTON_TAG_NAME } from './checkout-button'
 import { Frontend } from '../frontend'
-import { Product } from '../types/shop'
+import { Product, OrderReceipt } from '../types/shop'
 
 const TAG_NAME = 'nimiq-shop'
 
@@ -28,13 +28,24 @@ export class NimiqShop extends LitElement {
   collectMetadata
 
   @property({ type: String })
+  onSuccess
+
+  @property({ type: String })
   onError
 
   private metadataCallback: Function = product => {
-    console.warn('collect metadata not implements')
+    console.warn('collect metadata not implemented')
     console.log(product)
   }
-
+  private successCallback: Function = (products, sum, orderId, txHash) => {
+    console.log({
+      message: 'order successful',
+      products,
+      sum,
+      orderId,
+      txHash,
+    })
+  }
   private errorCallback: Function = error => {
     console.warn(error)
   }
@@ -65,6 +76,9 @@ export class NimiqShop extends LitElement {
     if (this.collectMetadata) {
       this.metadataCallback = eval(this.collectMetadata)
     }
+    if (this.onSuccess) {
+      this.successCallback = eval(this.onSuccess)
+    }
     if (this.onError) {
       this.errorCallback = eval(this.onError)
     }
@@ -77,16 +91,17 @@ export class NimiqShop extends LitElement {
     }
   }
 
-  protected async checkout(ev: CustomEvent): Promise<string> {
+  protected async checkout(ev: CustomEvent): Promise<void> {
     console.log('checkout', ev)
     const frontend = await this.frontend
     const products: Product[] = [ev.detail]
+    const sum = frontend.sumUp(products)
     try {
-      const metadata = await this.metadataCallback(
-        products,
-        frontend.sumUp(products),
-      )
-      if (metadata) return frontend.checkout(products, metadata)
+      const metadata = await this.metadataCallback(products, sum)
+      if (metadata) {
+        const receipt = await frontend.checkout(products, metadata)
+        this.successCallback(receipt)
+      }
     } catch (e) {
       this.errorCallback(e)
     }

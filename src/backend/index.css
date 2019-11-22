@@ -1,3 +1,4 @@
 #open_orders li {
     white-space: pre;
+    overflow: hidden;
 }

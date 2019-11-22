@@ -6,7 +6,18 @@ export class Shop {
   protected storage: Storage
 
   constructor(configuration: ShopConfiguration) {
-    const { id, live } = configuration
+    configuration.force = Object.assign(
+      {
+        ipfs: false,
+        encryption: false,
+        mainnet: false,
+      },
+      configuration.force,
+    )
+    if (typeof configuration.publicKey == 'string')
+      configuration.publicKey = JSON.parse(configuration.publicKey)
+
+    const { id, live, force } = configuration
 
     try {
       new URL(configuration.logo)
@@ -14,7 +25,7 @@ export class Shop {
       configuration.logo = location + configuration.logo
     }
     this.configuration = configuration
-    this.storage = new Storage(id, live, live)
+    this.storage = new Storage(id, live || force.ipfs, live || force.encryption)
   }
 
   sumUp(products: Product[]): number {

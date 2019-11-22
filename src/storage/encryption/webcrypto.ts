@@ -11,7 +11,6 @@ const FORMAT = 'jwk'
 
 const crypto: Crypto = window.crypto || window.msCrypto
 const encoder = new TextEncoder()
-const decoder = new TextDecoder()
 
 export class WebCrypto implements Encryption {
   async encrypt(data: Uint8Array, publicKey: JsonWebKey): Promise<Uint8Array> {
@@ -47,6 +46,6 @@ export class WebCrypto implements Encryption {
   async hash(s: string): Promise<string> {
     const data = encoder.encode(s)
     const hash = await crypto.subtle.digest(ALGORITHM.hash, data)
-    return decoder.decode(hash)
+    return btoa(String.fromCharCode.apply(null, new Uint8Array(hash)))
   }
 }

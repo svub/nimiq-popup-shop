@@ -51,10 +51,12 @@
     "webpack-dev-server": "^3.8.2"
   },
   "dependencies": {
-    "@nimiq/hub-api": "^1.0.1",
     "@nimiq/core": "^1.5.3",
     "@nimiq/core-web": "^1.5.3",
+    "@nimiq/hub-api": "^1.0.1",
+    "@types/ipfs": "https://github.com/survirtual/types-ipfs",
     "core-js": "^3.3.3",
+    "ipfs": "^0.39.0",
     "lit-element": "^2.2.1"
   }
 }
