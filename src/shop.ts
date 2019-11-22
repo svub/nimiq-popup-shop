@@ -8,15 +8,18 @@ export class Shop {
   constructor(configuration: ShopConfiguration) {
     const { id, live } = configuration
 
+    try {
+      new URL(configuration.logo)
+    } catch (e) {
+      configuration.logo = location + configuration.logo
+    }
     this.configuration = configuration
     this.storage = new Storage(id, live, live)
   }
 
-  protected sum(products: Product[]): number {
-    return (
-      products
-        .map(product => product.price)
-        .reduce((sum, price) => sum + price) * 1e5
-    )
+  sumUp(products: Product[]): number {
+    return products
+      .map(product => product.price)
+      .reduce((sum, price) => sum + price, 0)
   }
 }
