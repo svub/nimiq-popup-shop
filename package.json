@@ -28,14 +28,13 @@
   },
   "homepage": "https://github.com/svub/nimiq-popup-shop#readme",
   "devDependencies": {
-    "@nimiq/core-types": "^1.4.2",
     "@types/jasmine": "^3.4.2",
     "@typescript-eslint/eslint-plugin": "^2.5.0",
     "@typescript-eslint/parser": "^2.5.0",
     "css-loader": "^3.2.0",
     "dotenv-webpack": "^1.7.0",
-    "eslint": "^6.5.1",
-    "eslint-config-prettier": "^6.4.0",
+    "eslint": "^6.6.0",
+    "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-prettier": "^3.1.1",
     "html-webpack-plugin": "^3.2.0",
     "jasmine-core": "^3.5.0",
@@ -53,6 +52,8 @@
   },
   "dependencies": {
     "@nimiq/hub-api": "^1.0.1",
+    "@nimiq/core": "^1.5.3",
+    "@nimiq/core-web": "^1.5.3",
     "core-js": "^3.3.3",
     "lit-element": "^2.2.1"
   }

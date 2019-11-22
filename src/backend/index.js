@@ -17,11 +17,10 @@ async function initialize() {
     const key = prompt(
       `Hi there! Seems like you're here for the first time!
 
-Do you have already a private key? Then paste it below.
+Do you have a private key already? Then paste it below.
 Otherwise, just leave the field empty or hit cancel to set-up the Nimiq Pop-Up Shop together.`,
       '',
     )
-    console.log(key)
     localStorage.privateKey = key ? key : ''
   }
   privateKey = localStorage.privateKey
@@ -37,7 +36,8 @@ Otherwise, just leave the field empty or hit cancel to set-up the Nimiq Pop-Up S
 }
 
 async function loadOpenOrders() {
-  const orders = await backend.list(privateKey)
+  await backend.sync(privateKey)
+  const orders = backend.list()
   const list = $('open_orders')
   list.innerHTML = ''
   if (orders.length > 0) {
