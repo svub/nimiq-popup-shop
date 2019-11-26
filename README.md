@@ -6,22 +6,24 @@ Yello! Nimiq is a blockchain that runs in your browser. You can pay anywhere dir
 
 The shop is easy to integrate and runs its logic client side - no server needed. :)
 The data is encrypted and stored on [IPFS](https://ipfs.io/).
-Now that the server is gone, you could even deploy you shop itself to IPFS, no problem.
+Now that the server is gone, you could even deploy your shop itself to IPFS, no problem.
 
 ## How does it work?
 
-Your website, or say, future web shop is hosted statically somewhere on the web (e.g. [netlify.com](https://www.netlify.com/) or via [GitHub Pages](https://pages.github.com/)) and you added Nimiq Checkout buttons to it. Now, your visitors become customers. When they buy something, the order with all the details you need (e-mail, shipping address, it's in your hand) is encoded with a public key and stored as file on IPFS.
+Your website, or say, **your future web shop** is hosted statically somewhere on the web (e.g. [netlify.com](https://www.netlify.com/) or via [GitHub Pages](https://pages.github.com/)) and you added Nimiq Checkout buttons to it. Now, your visitors become customers. When they buy something, the order with all the details you need (e-mail, shipping address, it's in your hand) is encoded with a public key and stored as file on IPFS.
 The hash of that file on IPFS is stored with the transaction when your customer pays you in NIM.
 As the shop owner, you can access the statically hosted backend anywhere.
-You log in with your private key and shop address.
-All transactions for your shop will be fetched from the Nimiq blockchain, then the orders from IPFS and decrypt them with your key.
+You enter your private key (it's safe because it's all client-side) and shop address.
+All transactions for your shop will be fetched from the Nimiq blockchain, then the orders from IPFS and decrypted them with your key.
 But that doesn't need to bother you, it's all packed in this lib so you can just add a button for viewers to become shoppers. :)
 
 ## How to use
 
-Go this page to create a shop configuration for you:
+Go to this page to create a shop configuration for you:
 
 `// TODO :P`
+
+_For now, check the section at the bottom about how to run the code and access the backend locally at [localhost:3333/backend](http://localhost:3333/backend/)._
 
 Change in the config what you need and store the file as "/nimiq-pop-up-shop-configuration.json"
 
