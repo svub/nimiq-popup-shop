@@ -5,7 +5,6 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const config = Object.assign({}, common, {
   mode: 'production',
-  entry: [path.join(__dirname, `${PATHS.src}/index.ts`)],
   output: {
     path: path.join(__dirname, '/docs/'),
     pathinfo: true,

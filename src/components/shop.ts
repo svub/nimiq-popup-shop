@@ -54,7 +54,7 @@ export class NimiqShop extends LitElement {
 
   constructor() {
     super()
-    this.config = 'nimiq-pop-up-shop-configuration.json'
+    this.config = './nimiq-pop-up-shop-configuration.json'
     this.checkout = this.checkout.bind(this)
   }
 
