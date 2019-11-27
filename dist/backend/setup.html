@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Muli:400,600,700" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@nimiq/style/nimiq-style.min.css" rel="stylesheet">
+    <link href="common.css" rel="stylesheet">
+    <link href="setup.css" rel="stylesheet">
+    <script src="../nimiq-shop.js"></script>
+    <script type="module" src="./setup.js"></script>
+    <title>Pop-Up Shop Setup</title>
+</head>
+
+<body class="nq-style">
+    <div class="nq-card">
+        <div class="nq-card-header">
+            <h2>Nimiq Pop-Up Shop Setup</h2>
+        </div>
+        <div class="nq-card-body">
+            <p>
+                <strong>Hello! :)</strong>
+            </p>
+            <p>
+                It takes two steps to set up your shop: store the private key savely and customize your shop's configuration.
+            </p>
+        </div>
+    </div>
+
+    <div class="nq-card">
+        <div class="nq-card-header">
+            <h2>Your private key</h2>
+        </div>
+        <div class="nq-card-body">
+            <p>
+                Copy the text from the box below and store it somewhere safe, e.g. in an encrypted ZIP file.
+                If somebody gets this text (your private key), this person has access to your shop and all the orders.
+            </p>
+            <p>
+                <strong>Don't share, store safely.</strong>
+            </p>
+            <textarea id="private"></textarea>
+        </div>
+    </div>
+
+    <div class="nq-card">
+        <div class="nq-card-header">
+            <h2>Your configuration</h2>
+        </div>
+        <div class="nq-card-body">
+            <ol>
+                <li>Edit <code>name</code> and <code>address</code></li>
+                <li>Add a <code>logo</code> if you like (if not, remove the line)</li>
+                <li>Set <code>live: true</code> once you tested everything and you're ready for your first customers
+                </li>
+                <li>Don't touch anything below (<code>id</code> and <code>publicKey</code>)</li>
+                <li>
+                    Copy/paste the entire thing into a file and named <code>nimiq-popup-shop-configuration.json</code>
+                    and put it the root of your shop. Note: if you want to put it in another place, make sure to add
+                    <code>config="[file location]"</code> to <code>&lt;nimiq-shop&gt;</code>.
+                </li>
+            </ol>
+            <textarea id="config"></textarea>
+        </div>
+        <div class="nq-card-footer">
+                <a class="nq-button" href="./">All done, go to the shop backend</a>
+                <button class="nq-button-s" id="new">Create new configuration</button>
+        </div>
+    </div>
+    </section>
+</body>
+
+</html>

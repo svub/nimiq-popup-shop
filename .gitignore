@@ -1,6 +1,5 @@
 node_modules
 .package-lock.json
-dist/
 yarn-error.log
 lint.sh
 nimiq-pop-up-shop-configuration.json
