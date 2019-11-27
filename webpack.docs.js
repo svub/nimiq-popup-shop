@@ -38,9 +38,6 @@ config.plugins.push(
       to: 'backend/wasm/',
       flatten: true,
     },
-    {
-      from: 'src/nimiq-pop-up-shop-configuration.json',
-    },
   ]),
 )
 
