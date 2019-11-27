@@ -2,7 +2,6 @@ const path = require('path')
 const { common, PATHS } = require('./webpack.common')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
-const CopyWebpackPlugin = require('copy-webpack-plugin')
 
 const config = Object.assign({}, common, {
   mode: 'production',
@@ -37,22 +36,6 @@ config.plugins.push(
     path: './.env.production',
     defaults: true,
   }),
-  new CopyWebpackPlugin([
-    {
-      from: 'src/backend/*',
-      to: 'backend/',
-      flatten: true,
-      ignore: '*.ts',
-    },
-    {
-      from: 'src/backend/wasm/*',
-      to: 'backend/wasm/',
-      flatten: true,
-    },
-    {
-      from: 'src/nimiq-pop-up-shop-configuration.json',
-    },
-  ]),
 )
 
 module.exports = config
