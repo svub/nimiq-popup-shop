@@ -54,14 +54,14 @@ export class NimiqShop extends LitElement {
 
   constructor() {
     super()
-    this.config = './nimiq-pop-up-shop-configuration.json'
+    this.config = location + 'nimiq-pop-up-shop-configuration.json'
     this.checkout = this.checkout.bind(this)
   }
 
-  firstUpdated(changedProperties): void {
+  firstUpdated(): void {
     console.log(this.config)
     this.frontend = new Promise<Frontend>(resolve => {
-      fetch(location + this.config)
+      fetch(this.config)
         .then(data => data.json())
         .then(configuration => resolve(new Frontend(configuration)))
     })

@@ -49,7 +49,7 @@ async function initialize() {
     return (location.href = 'setup.html')
   }
 
-  backend = new NimiqShop.Backend(configuration, privateKey)
+  backend = new NimiqShop.Backend(configuration, privateKey, location + 'wasm/')
   loadOpenOrders()
 
   $('update').addEventListener('click', loadOpenOrders)

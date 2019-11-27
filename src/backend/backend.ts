@@ -11,17 +11,19 @@ import Nimiq from '@nimiq/core-web'
 const decoder = new TextDecoder()
 
 export class Backend extends Shop {
-  private nimiq = new Promise<Nimiq.Client>(resolve =>
-    this.loadNimiq().then(resolve),
-  )
+  private nimiq
   private privateKey: JsonWebKey
+  private wasmLocation: string
 
   // TODO(svub) import and export order and TX history
 
-  constructor(configuration: ShopConfiguration, privateKey: JsonWebKey) {
+  constructor(configuration: ShopConfiguration, privateKey: JsonWebKey, wasm: string = location.origin + '/backend/wasm/') {
     super(configuration)
     this.privateKey =
       typeof privateKey == 'string' ? JSON.parse(privateKey) : privateKey
+    this.nimiq = new Promise<Nimiq.Client>(resolve =>
+      this.loadNimiq(wasm).then(resolve),
+    )
   }
 
   async sync(): Promise<void> {
@@ -95,9 +97,9 @@ export class Backend extends Shop {
     return newTx
   }
 
-  private async loadNimiq(): Promise<Nimiq.Client> {
+  private async loadNimiq(wasmLocation): Promise<Nimiq.Client> {
     // @ts-ignore parameter exists but missing in type definition, PR submitted
-    await Nimiq.load(location.origin + '/backend/wasm/')
+    await Nimiq.load(wasmLocation)
     this.configuration.live || this.configuration.force.mainnet
       ? Nimiq.GenesisConfig.main()
       : Nimiq.GenesisConfig.test()
