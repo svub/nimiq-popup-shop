@@ -19,10 +19,15 @@ config.plugins.push(
     defaults: true,
   }),
   new CopyWebpackPlugin([
+    // demo shop
     {
       from: 'dist/*',
       flatten: true,
     },
+    {
+      from: 'src/common.css',
+    },
+    // backend
     {
       from: 'src/backend/*',
       to: 'backend/',
