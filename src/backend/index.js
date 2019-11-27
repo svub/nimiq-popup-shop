@@ -34,7 +34,7 @@ async function loadOpenOrders() {
 async function initialize() {
   try {
     configuration = await (await fetch(
-      location + '../nimiq-pop-up-shop-configuration.json',
+      location + '../nimiq-pop-up-shop-configuration.js',
     )).json()
   } catch (e) {
     return alert(

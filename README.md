@@ -25,7 +25,7 @@ Go to this page to create a shop configuration for you:
 
 _For now, check the section at the bottom about how to run the code and access the backend locally at [localhost:3333/backend](http://localhost:3333/backend/)._
 
-Change in the config what you need and store the file as "nimiq-pop-up-shop-configuration.json"
+Change in the config what you need and store the file as "nimiq-pop-up-shop-configuration.js"
 
 ```json
 {
@@ -52,7 +52,7 @@ And then use the web compenents anywhere in your shop or website:
     * collectmetadata: Called by the shop when a customer orders so you can return the metadata needed, e.g. shipping address
     * onerror: something went wrong, the customer didn't buy
     * onsuccess: and order was finished successfully
-    * config: URL to your config file (previous step) if it's not in the same folder and called "nimiq-pop-up-shop-configuration.json"
+    * config: URL to your config file (previous step) if it's not in the same folder and called "nimiq-pop-up-shop-configuration.js"
   -->
   <nimiq-shop collectmetadata="getMetadata" onerror="checkoutError" onsuccess="checkoutSuccess">
 
