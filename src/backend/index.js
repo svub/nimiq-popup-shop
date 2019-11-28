@@ -2,14 +2,8 @@ const $ = document.getElementById.bind(document)
 
 let configuration, privateKey, backend
 
-function enterKey() {
-  const key = prompt(
-    `Hi there! Seems like you're here for the first time!
-
-Do you have a private key already? Then paste it below.
-Otherwise, just leave the field empty or hit cancel to set-up the Nimiq Pop-Up Shop together.`,
-    '',
-  )
+function enterKey(message) {
+  const key = prompt(message, '')
   const changed = localStorage.privateKey != key
   localStorage.privateKey = key ? key : ''
   return changed
@@ -42,7 +36,10 @@ async function initialize() {
     )
   }
 
-  if (!localStorage.privateKey) enterKey()
+  if (!localStorage.privateKey) enterKey(`Hi there! Seems like you're here for the first time!
+
+  Do you have a private key already? Then paste it below.
+  Otherwise, just leave the field empty or hit cancel to set-up the Nimiq Pop-Up Shop together.`)
   privateKey = localStorage.privateKey
 
   if (!privateKey || !configuration) {
@@ -54,8 +51,9 @@ async function initialize() {
 
   $('update').addEventListener('click', loadOpenOrders)
   $('change-key').addEventListener('click', () => {
-    if (enterKey()) {
+    if (enterKey('Please paste your private key below.')) {
       backend.clearCache()
+      localStorage.clear()
       location.reload()
     }
   })

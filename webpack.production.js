@@ -6,6 +6,7 @@ const Dotenv = require('dotenv-webpack')
 const config = Object.assign({}, common, {
   mode: 'production',
   optimization: {
+    // Disabled because it breaks IPFS: it's trying to use the class "JungleDB"... but that class name has been obfuscated...
     minimize: false,
   },
   entry: [path.join(__dirname, `${PATHS.src}/index.ts`)],
