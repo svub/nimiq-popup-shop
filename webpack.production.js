@@ -5,6 +5,9 @@ const Dotenv = require('dotenv-webpack')
 
 const config = Object.assign({}, common, {
   mode: 'production',
+  optimization: {
+    minimize: false,
+  },
   entry: [path.join(__dirname, `${PATHS.src}/index.ts`)],
   module: {
     rules: [
