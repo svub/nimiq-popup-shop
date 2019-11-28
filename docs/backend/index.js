@@ -34,7 +34,7 @@ async function loadOpenOrders() {
 async function initialize() {
   try {
     configuration = await (await fetch(
-      location + '../nimiq-pop-up-shop-configuration.json',
+      location + '../nimiq-pop-up-shop-configuration.js',
     )).json()
   } catch (e) {
     return alert(
@@ -49,7 +49,7 @@ async function initialize() {
     return (location.href = 'setup.html')
   }
 
-  backend = new NimiqShop.Backend(configuration, privateKey)
+  backend = new NimiqShop.Backend(configuration, privateKey, location + 'wasm/')
   loadOpenOrders()
 
   $('update').addEventListener('click', loadOpenOrders)
