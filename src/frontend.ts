@@ -26,7 +26,7 @@ export class Frontend extends Shop {
     const sum = super.sumUp(products)
 
     const orderId = await this.order(products, meta)
-    const txHash = await this.pay(orderId, sum)
+    const txHash = (await this.pay(orderId, sum)).hash
 
     return { products, sum, orderId, txHash }
   }
@@ -44,7 +44,10 @@ export class Frontend extends Shop {
       fee,
       shopLogoUrl: logo,
     }
-    return await this.hubApi.checkout(options)
+    return await this.hubApi.checkout(options).catch((error: Error) => {
+      if (error.name == 'CANCELED') return null
+      else throw error
+    })
   }
 
   private async order(products: Product[], meta: JSON): Promise<string> {

@@ -36,7 +36,8 @@ async function initialize() {
     )
   }
 
-  if (!localStorage.privateKey) enterKey(`Hi there! Seems like you're here for the first time!
+  if (!localStorage.privateKey)
+    enterKey(`Hi there! Seems like you're here for the first time!
 
   Do you have a private key already? Then paste it below.
   Otherwise, just leave the field empty or hit cancel to set-up the Nimiq Pop-Up Shop together.`)

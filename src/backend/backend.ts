@@ -17,7 +17,11 @@ export class Backend extends Shop {
 
   // TODO(svub) import and export order and TX history
 
-  constructor(configuration: ShopConfiguration, privateKey: JsonWebKey, wasm: string = location.origin + '/backend/wasm/') {
+  constructor(
+    configuration: ShopConfiguration,
+    privateKey: JsonWebKey,
+    wasm: string = location.origin + '/backend/wasm/',
+  ) {
     super(configuration)
     this.privateKey =
       typeof privateKey == 'string' ? JSON.parse(privateKey) : privateKey

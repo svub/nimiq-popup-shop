@@ -7,7 +7,7 @@ import {
 } from 'lit-element'
 import { TAG_NAME as BUTTON_TAG_NAME } from './checkout-button'
 import { Frontend } from '../frontend'
-import { Product, OrderReceipt } from '../types/shop'
+import { Product } from '../types/shop'
 
 const TAG_NAME = 'nimiq-shop'
 
@@ -31,6 +31,9 @@ export class NimiqShop extends LitElement {
   onSuccess
 
   @property({ type: String })
+  onCancel
+
+  @property({ type: String })
   onError
 
   private metadataCallback: Function = product => {
@@ -45,6 +48,9 @@ export class NimiqShop extends LitElement {
       orderId,
       txHash,
     })
+  }
+  private cancelCallback: Function = () => {
+    console.info('Checkout cancelled')
   }
   private errorCallback: Function = error => {
     console.warn(error)
@@ -79,6 +85,9 @@ export class NimiqShop extends LitElement {
     if (this.onSuccess) {
       this.successCallback = eval(this.onSuccess)
     }
+    if (this.onCancel) {
+      this.cancelCallback = eval(this.onCancel)
+    }
     if (this.onError) {
       this.errorCallback = eval(this.onError)
     }
@@ -98,9 +107,15 @@ export class NimiqShop extends LitElement {
     const sum = frontend.sumUp(products)
     try {
       const metadata = await this.metadataCallback(products, sum)
-      if (metadata) {
+      if (metadata === false) {
+        this.cancelCallback()
+      } else {
         const receipt = await frontend.checkout(products, metadata)
-        this.successCallback(receipt)
+        if (receipt) {
+          this.successCallback(receipt)
+        } else {
+          this.cancelCallback()
+        }
       }
     } catch (e) {
       this.errorCallback(e)
