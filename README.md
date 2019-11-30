@@ -52,10 +52,11 @@ And then use the web compenents anywhere in your shop or website:
 ```html
   <!--
     Configure your shop! (all optional)
-    * collectmetadata: Called by the shop when a customer orders so you can return the metadata needed, e.g. shipping address
-    * onerror: something went wrong, the customer didn't buy
-    * onsuccess: and order was finished successfully
-    * config: URL to your config file (previous step) if it's not in the same folder and called "nimiq-pop-up-shop-configuration.js"
+    * collectmetadata: Called by the shop when a customer orders so you can return the metadata needed, e.g. shipping address - return false to signal that the user wants to cancel the checkout.
+    * onsuccess: Checkout was finished successfully.
+    * oncancel: The user has cancelled the checkout process.
+    * onerror: Something went wrong, the customer could finish checkout.
+    * config: URL to your config file (previous step) if it's not in the same folder and called "nimiq-pop-up-shop-configuration.js".
   -->
   <nimiq-shop collectmetadata="getMetadata" onerror="checkoutError" onsuccess="checkoutSuccess">
 
