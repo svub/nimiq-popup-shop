@@ -10,6 +10,9 @@ The shop is easy to integrate and runs its logic client side - no server needed.
 The data is encrypted and stored on [IPFS](https://ipfs.io/).
 Now that the server is gone, you could even deploy your shop itself to IPFS, no problem.
 
+Support this effort by donating NIM to the developers!
+[![Donate NIM](https://www.nimiq.com/accept-donations/img/donationBtnImg/gold-big.svg)](https://safe.nimiq.com/#_request/NQ76YRKFTFVXHXA3HATDDJ0KAH44KCVAKJNS_)
+
 ## How to use
 
 **Checkout the deployed example!** As it works in static HTML, here is a dummy shop deployed to GitHub Pages: [https://svub.github.io/nimiq-popup-shop/](https://svub.github.io/nimiq-popup-shop/backend/). And to see the orders coming in, copy the content of [this file](https://svub.github.io/nimiq-popup-shop/demo-private-key.js) -- that's the private key for the demo store -- and then go to [backend/](https://svub.github.io/nimiq-popup-shop/backend/).
