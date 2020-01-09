@@ -11,6 +11,7 @@ The data is encrypted and stored on [IPFS](https://ipfs.io/).
 Now that the server is gone, you could even deploy your shop itself to IPFS, no problem.
 
 Support this effort by donating NIM to the developers!
+
 [![Donate NIM](https://www.nimiq.com/accept-donations/img/donationBtnImg/gold-big.svg)](https://safe.nimiq.com/#_request/NQ76YRKFTFVXHXA3HATDDJ0KAH44KCVAKJNS_)
 
 ## How to use
