@@ -20,12 +20,18 @@ Support this effort by donating NIM to the developers!
 
 ## How does it work?
 
-Your website, or say, **your future web shop** is hosted statically somewhere on the web (e.g. [netlify.com](https://www.netlify.com/) or via [GitHub Pages](https://pages.github.com/)) and you added Nimiq Checkout buttons to it. Now, your visitors become customers. When they buy something, the order with all the details you need (e-mail, shipping address, it's in your hand) is encoded with a public key and stored as file on IPFS.
-The hash of that file on IPFS is stored with the transaction when your customer pays you in NIM.
-As the shop owner, you can access the statically hosted backend anywhere.
-You enter your private key (it's safe because it's all client-side) and shop address.
-All transactions for your shop will be fetched from the Nimiq blockchain, then the orders from IPFS and decrypted them with your key.
-But that doesn't need to bother you, it's all packed in this lib so you can just add a button for viewers to become shoppers. :)
+Your website, or say, **your future web shop** is hosted statically somewhere on the web (e.g. [netlify.com](https://www.netlify.com/) or via [GitHub Pages](https://pages.github.com/)) and you added Nimiq Checkout buttons to it. 
+Now, your visitors become customers. 
+When they buy something, the order with all the details you need (e-mail, shipping address, you choose) are encoded with your public key and stored as a file on IPFS.
+The hash of that IPFS file is stored with the transaction when your customer pays you in NIM.
+And when you as the shop owner want to see the orders and act on them, 
+you just access the statically hosted backend and enter your private key and shop address.
+It's safe because everything happens client-side, and secure because only the person with the private key can see the orders. 
+Once address and key are entered, 
+all transactions for your shop's address will be fetched from the Nimiq blockchain and then, 
+all the orders will be fetched from IPFS and decrypt using your private key.
+
+But you don't have to fiddle around with all these steps and details, because it's all packed in this lib so you can just add a button and your visitors will become shoppers. :)
 
 ## Setup your own shop
 
@@ -55,12 +61,17 @@ And then use the web compenents anywhere in your shop or website:
 
 ```html
   <!--
-    Configure your shop! (all optional)
-    * collectmetadata: Called by the shop when a customer orders so you can return the metadata needed, e.g. shipping address - return false to signal that the user wants to cancel the checkout.
+    Configure your shop! (all callbacks are optional)
+    * collectmetadata: 
+    *   This callback method will be called by the Nimiq Pop-Up Shop when a customer wants to order.
+    *   During the callback, you can open a pop-up and as the user for all additional information that you need 
+    *   to fulfil the order, e.g. shipping address - or return false to signal that the user wants to cancel the checkout.
     * onsuccess: Checkout was finished successfully.
     * oncancel: The user has cancelled the checkout process.
-    * onerror: Something went wrong, the customer could finish checkout.
-    * config: URL to your config file (previous step) if it's not in the same folder and called "nimiq-pop-up-shop-configuration.js".
+    * onerror: Something went wrong, the customer could not finish the checkout process.
+    * config: 
+    *   URL to your config file (see previous section). 
+    *   You don't have to set this if you name the file "nimiq-pop-up-shop-configuration.js" and put it in the same folder.
   -->
   <nimiq-shop collectmetadata="getMetadata" onerror="checkoutError" onsuccess="checkoutSuccess">
 
@@ -74,8 +85,8 @@ And then use the web compenents anywhere in your shop or website:
 
     <!-- And another product -->
     <nimiq-shop-checkout-button
-      product="Product b"
-      price="2.0"
+      product="Product B"
+      price="123.0"
       />
 
   </nimiq-shop>
@@ -88,29 +99,30 @@ Check out the [issues](https://github.com/svub/nimiq-popup-shop/issues).
 
 ### Run example
 
-```
+```bash
 # install dependencies (only once)
-yarn
-# run example
-yarn start
-# open browser
-firefox http://localhost:3333
+npm install
+# run the example
+npm run start
 ```
+
+Then open your browser at http://localhost:3333.
 
 ### Tests
 
-Run tests using Headless Chrome
-```
-yarn test
+Run the tests using a headless Chrome browser:
+
+```bash
+npm run test
 ```
 
-More info about automated testing with Headless Chrome: https://developers.google.com/web/updates/2017/06/headless-karma-mocha-chai#run_your_tests
+More info about automated testing with headless Chrome: https://developers.google.com/web/updates/2017/06/headless-karma-mocha-chai#run_your_tests
 
 ### WebComponent approach
 
 Behind the scenes `LitElement` is used to provide `<nimiq-shop-checkout-button>` as a web component. `LitElement` is just _"a simple base class for creating fast, lightweight web components"_.
 https://lit-element.polymer-project.org/
 
-
 ### TypeScript compiler options for `LitElement`
+
 https://lit-element.polymer-project.org/guide/publish#transpiling-with-typescript
